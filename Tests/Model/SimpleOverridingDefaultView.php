@@ -1,0 +1,24 @@
+<?php
+
+namespace Codete\FormGeneratorBundle\Tests\Model;
+
+use Codete\FormGeneratorBundle\Annotations as Form;
+
+/**
+ * @Form\Form(
+ *   default = {
+ *     "title" = { "attr" = { "class" = "foo" } },
+ *     "author" = { "type" = "choice", "choices" = { "foo" = "foo", "bar" = "bar" } }
+ *   },
+ *   only_title = {
+ *     "title"
+ *   }
+ * )
+ */
+class SimpleOverridingDefaultView extends Simple
+{
+    /**
+     * @Form\Display(type="text")
+     */
+    public $author;
+}
