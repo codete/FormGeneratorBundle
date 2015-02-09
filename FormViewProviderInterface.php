@@ -10,7 +10,7 @@ namespace Codete\FormGeneratorBundle;
  * 
  * @author Maciej Malarz <malarzm@gmail.com>
  */
-interface FormViewProvider
+interface FormViewProviderInterface
 {
     /**
      * Check if this FormViewProvider can provide form view

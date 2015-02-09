@@ -21,13 +21,13 @@ class FormGenerator
     /** @var FormFactoryInterface */
     private $formFactory;
     
-    /** @var FormConfigurationModifier[] */
+    /** @var FormConfigurationModifierInterface[] */
     private $formConfigurationModifiers = array();
     
-    /** @var FormFieldResolver[] */
+    /** @var FormFieldResolverInterface[] */
     private $formFieldResolvers = array();
     
-    /** @var FormViewProvider[] */
+    /** @var FormViewProviderInterface[] */
     private $formViewProviders = array();
     
     public function __construct(FormFactoryInterface $formFactory)
@@ -39,9 +39,9 @@ class FormGenerator
     /**
      * Adds modifier for form's configuration
      * 
-     * @param FormConfigurationModifier $modifier
+     * @param FormConfigurationModifierInterface $modifier
      */
-    public function addFormConfigurationModifier(FormConfigurationModifier $modifier)
+    public function addFormConfigurationModifier(FormConfigurationModifierInterface $modifier)
     {
         $this->formConfigurationModifiers[] = $modifier;
     }
@@ -49,9 +49,9 @@ class FormGenerator
     /**
      * Adds resolver for form's fields
      * 
-     * @param FormFieldResolver $resolver
+     * @param FormFieldResolverInterface $resolver
      */
-    public function addFormFieldResolver(FormFieldResolver $resolver)
+    public function addFormFieldResolver(FormFieldResolverInterface $resolver)
     {
         $this->formFieldResolvers[] = $resolver;
     }
@@ -59,9 +59,9 @@ class FormGenerator
     /**
      * Adds provider for defining default fields for form
      * 
-     * @param FormViewProvider $provider
+     * @param FormViewProviderInterface $provider
      */
-    public function addFormViewProvider(FormViewProvider $provider)
+    public function addFormViewProvider(FormViewProviderInterface $provider)
     {
         $this->formViewProviders[] = $provider;
     }

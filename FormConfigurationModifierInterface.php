@@ -5,7 +5,7 @@ namespace Codete\FormGeneratorBundle;
 /**
  * @author Maciej Malarz <malarzm@gmail.com>
  */
-interface FormConfigurationModifier
+interface FormConfigurationModifierInterface
 {
     /**
      * Check if this FormConfigurationModifier can alter form's configuration

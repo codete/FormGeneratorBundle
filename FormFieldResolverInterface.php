@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
  * 
  * @author Maciej Malarz <malarzm@gmail.com>
  */
-interface FormFieldResolver
+interface FormFieldResolverInterface
 {
     /**
      * Check if this FormFieldResolver can provide form field

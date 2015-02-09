@@ -2,10 +2,10 @@
 
 namespace Codete\FormGeneratorBundle\Tests\FormConfigurationModifier;
 
-use Codete\FormGeneratorBundle\FormConfigurationModifier;
+use Codete\FormGeneratorBundle\FormConfigurationModifierInterface;
 use Codete\FormGeneratorBundle\Tests\Model\Person;
 
-class InactivePersonModifier implements FormConfigurationModifier
+class InactivePersonModifier implements FormConfigurationModifierInterface
 {
     public function modify($model, $configuration, $context) 
     {

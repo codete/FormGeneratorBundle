@@ -117,7 +117,7 @@ stuff to your Form or tweak existing configuration
 Tag for service: ``form_generator.configuration_modifier``
 
 ``` php
-class InactivePersonModifier implements FormConfigurationModifier
+class InactivePersonModifier implements FormConfigurationModifierInterface
 {
     public function modify($model, $configuration, $context) 
     {
@@ -141,7 +141,7 @@ be used for instance to attach Transformers to your fields.
 Tag for service: ``form_generator.field_resolver``
 
 ``` php
-class PersonSalaryResolver implements FormFieldResolver
+class PersonSalaryResolver implements FormFieldResolverInterface
 {
     public function getFormField(FormBuilderInterface $fb, $field, $type, $options, $context) 
     {

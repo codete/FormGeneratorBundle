@@ -56,7 +56,7 @@ class FormGeneratorTest extends BaseTest
     public function testFormViewProviderOrderMatters()
     {
         $this->formGenerator->addFormViewProvider(new FormViewProvider\PersonAddFormView());
-        $notCalled = $this->getMockBuilder('Codete\FormGeneratorBundle\FormViewProvider')
+        $notCalled = $this->getMockBuilder('Codete\FormGeneratorBundle\FormViewProviderInterface')
             ->getMock();
         $notCalled->expects($this->never())->method('supports');
         $this->formGenerator->addFormViewProvider($notCalled);
@@ -88,7 +88,7 @@ class FormGeneratorTest extends BaseTest
     public function testFormFieldResolverOrderMatters()
     {
         $this->formGenerator->addFormFieldResolver(new FormFieldResolver\PersonSalaryResolver());
-        $notCalled = $this->getMockBuilder('Codete\FormGeneratorBundle\FormFieldResolver')
+        $notCalled = $this->getMockBuilder('Codete\FormGeneratorBundle\FormFieldResolverInterface')
             ->getMock();
         $notCalled->expects($this->never())->method('supports');
         $this->formGenerator->addFormFieldResolver($notCalled);

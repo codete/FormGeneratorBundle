@@ -2,12 +2,12 @@
 
 namespace Codete\FormGeneratorBundle\Tests\FormFieldResolver;
 
-use Codete\FormGeneratorBundle\FormFieldResolver;
+use Codete\FormGeneratorBundle\FormFieldResolverInterface;
 use Codete\FormGeneratorBundle\Tests\Model\Person;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class PersonSalaryResolver implements FormFieldResolver
+class PersonSalaryResolver implements FormFieldResolverInterface
 {
     public function getFormField(FormBuilderInterface $fb, $field, $type, $options, $context) 
     {

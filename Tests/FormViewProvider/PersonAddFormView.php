@@ -2,10 +2,10 @@
 
 namespace Codete\FormGeneratorBundle\Tests\FormViewProvider;
 
-use Codete\FormGeneratorBundle\FormViewProvider;
+use Codete\FormGeneratorBundle\FormViewProviderInterface;
 use Codete\FormGeneratorBundle\Tests\Model\Person;
 
-class PersonAddFormView implements FormViewProvider
+class PersonAddFormView implements FormViewProviderInterface
 {
     public function getFields($model, $context) 
     {
