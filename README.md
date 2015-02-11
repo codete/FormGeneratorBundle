@@ -1,6 +1,9 @@
 FormGeneratorBundle
 ===================
 
+[![Build Status](https://travis-ci.org/codete/FormGeneratorBundle.svg?branch=master)](https://travis-ci.org/codete/FormGeneratorBundle)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/8893e0c9-ed68-498e-aa86-63320ac43a62/mini.png)](https://insight.sensiolabs.com/projects/8893e0c9-ed68-498e-aa86-63320ac43a62)
+
 We were extremely bored with writing/generating/keeping-up-to-date
 our FormType classes so we wanted to automate the process and limit
 required changes only to Entity/Document/Whatever class and get new
