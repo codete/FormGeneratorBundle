@@ -17,13 +17,13 @@ class FormGeneratorTest extends BaseTest
         return array(
             array(new Model\Simple(), array('title')),
             array(new Model\SimpleNotOverridingDefaultView(), array('author', 'title')),
-            array(new Model\SimpleOverridingDefaultView(), array('title', 'author'), function($form) {
+            array(new Model\SimpleOverridingDefaultView(), array('title', 'author'), function($phpunit, $form) {
                 $titleOptions = $form->get('title')->getConfig()->getOptions();
-                $this->assertEquals('foo', $titleOptions['attr']['class']);
+                $phpunit->assertEquals('foo', $titleOptions['attr']['class']);
                 $authorConfig = $form->get('author')->getConfig();
-                $this->assertInstanceOf('Symfony\Component\Form\Extension\Core\Type\ChoiceType', $authorConfig->getType()->getInnerType());
+                $phpunit->assertInstanceOf('Symfony\Component\Form\Extension\Core\Type\ChoiceType', $authorConfig->getType()->getInnerType());
                 $authorOptions = $authorConfig->getOptions();
-                $this->assertSame(array('foo' => 'foo', 'bar' => 'bar'), $authorOptions['choices']);
+                $phpunit->assertSame(array('foo' => 'foo', 'bar' => 'bar'), $authorOptions['choices']);
             }),
         );
     }
@@ -74,7 +74,7 @@ class FormGeneratorTest extends BaseTest
     public function testFormFieldResolver()
     {
         $this->formGenerator->addFormFieldResolver(new FormFieldResolver\PersonSalaryResolver());
-        $this->checkForm(new Model\Person(), array('title', 'name', 'surname', 'photo', 'active', 'salary'), function($form) {
+        $this->checkForm(new Model\Person(), array('title', 'name', 'surname', 'photo', 'active', 'salary'), function($phpunit, $form) {
             $config = $form->get('salary')->getConfig();
             foreach ($config->getViewTransformers() as $t) {
                 if ($t instanceof FormFieldResolver\DummyDataTransformer) {
@@ -133,7 +133,7 @@ class FormGeneratorTest extends BaseTest
             $this->assertEquals($field->getName(), $expectedFields[$cnt++]);
         }
         if ($additionalCheck !== null) {
-            $additionalCheck($form);
+            $additionalCheck($this, $form);
         }
     }
 }
