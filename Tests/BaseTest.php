@@ -13,8 +13,8 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-        AnnotationRegistry::registerFile(__DIR__ . '/../Annotations/Annotations.php');
-        AnnotationRegistry::registerAutoloadNamespace('Symfony\Component\Validator\Constraints', __DIR__ . '/../vendor/symfony/symfony/src');
+        $loader = require __DIR__.'/../vendor/autoload.php';
+        AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
         $this->formGenerator = new FormGenerator(
             Forms::createFormFactoryBuilder()->getFormFactory()
         );
