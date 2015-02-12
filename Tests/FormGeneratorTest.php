@@ -95,6 +95,21 @@ class FormGeneratorTest extends BaseTest
         $this->formGenerator->createFormBuilder(new Model\Person(), 'work');
     }
     
+    public function testFormAnnotationViewIsInherited()
+    {
+        $this->checkForm(new Model\Director(), array('title', 'name', 'surname', 'photo', 'active'), null, 'personal');
+    }
+    
+    public function testFormAnnotationViewCanBeOverriden()
+    {
+        $this->checkForm(new Model\Director(), array('salary', 'department'), null, 'work');
+    }
+    
+    public function testAllParentsAreCheckedForDefaultFormView()
+    {
+        $this->checkForm(new Model\InheritanceTest(), array('title', 'author'));
+    }
+    
     /**
      * @dataProvider provideFieldsNormalization
      */

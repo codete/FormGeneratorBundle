@@ -27,4 +27,9 @@ class Form extends \Doctrine\Common\Annotations\Annotation
         }
         return $this->forms[$form];
     }
+    
+    public function hasForm($form)
+    {
+        return isset($this->forms[$form]);
+    }
 }
