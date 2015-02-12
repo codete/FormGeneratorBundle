@@ -170,10 +170,15 @@ class FormGenerator
     {
         $ro = new \ReflectionObject($model);
         $formAnnotation = $this->annotationReader->getClassAnnotation($ro, 'Codete\FormGeneratorBundle\Annotations\Form');
-        if ($formAnnotation === null && $form === 'default') {
-            return array();
-        } elseif ($formAnnotation === null) {
-            // create it just to not duplicate throwing Exception
+        if (($formAnnotation === null || !$formAnnotation->hasForm($form)) && $ro->getParentClass()) {
+            while ($ro = $ro->getParentClass()) {
+                $formAnnotation = $this->annotationReader->getClassAnnotation($ro, 'Codete\FormGeneratorBundle\Annotations\Form');
+                if ($formAnnotation !== null && $formAnnotation->hasForm($form)) {
+                    break;
+                }
+            }
+        }
+        if ($formAnnotation === null) {
             $formAnnotation = new Annotations\Form(array());
         }
         return $formAnnotation->getForm($form);
