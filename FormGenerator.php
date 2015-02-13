@@ -67,10 +67,11 @@ class FormGenerator
     }
     
     /**
-     * Creates and populates FormBuilder
+     * Creates FormBuilder and populates it
      * 
      * @param object $model data object
      * @param string $form view to generate
+     * @param array $context
      * @return FormBuilderInterface
      */
     public function createFormBuilder($model, $form = 'default', $context = array())
@@ -81,7 +82,23 @@ class FormGenerator
     }
     
     /**
-     * Populates existing FormBuilder
+     * Creates named FormBuilder and populates it
+     * 
+     * @param string $name
+     * @param object $model data object
+     * @param string $form view to generate
+     * @param array $context
+     * @return FormBuilderInterface
+     */
+    public function createNamedFormBuilder($name, $model, $form = 'default', $context = array())
+    {
+        $fb = $this->formFactory->createNamedBuilder($name, 'form', $model);
+        $this->populateFormBuilder($fb, $model, $form, $context);
+        return $fb;
+    }
+    
+    /**
+     * Populates FormBuilder
      * 
      * @param FormBuilderInterface $fb
      * @param object $model

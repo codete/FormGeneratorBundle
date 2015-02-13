@@ -28,6 +28,12 @@ class FormGeneratorTest extends BaseTest
         );
     }
     
+    public function testNamedForm()
+    {
+        $form = $this->formGenerator->createNamedFormBuilder('my_form', new Model\Simple());
+        $this->assertSame('my_form', $form->getName());
+    }
+    
     public function testFormViewDefinedInAnnotation()
     {
         $this->checkForm(new Model\SimpleOverridingDefaultView(), array('title'), null, 'only_title');
