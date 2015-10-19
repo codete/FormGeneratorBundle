@@ -68,6 +68,28 @@ class FormGeneratorTest extends BaseTest
         $this->formGenerator->addFormViewProvider($notCalled);
         $this->checkForm(new Model\Person(), array('surname'), null, 'add');
     }
+
+    public function testFormViewProviderPriorityMatters()
+    {
+        $notCalled = $this->getMockBuilder('Codete\FormGeneratorBundle\FormViewProviderInterface')
+            ->getMock();
+        $notCalled->expects($this->never())->method('supports');
+        $this->formGenerator->addFormViewProvider($notCalled);
+        $this->formGenerator->addFormViewProvider(new FormViewProvider\PersonAddFormView(), 1);
+        $this->checkForm(new Model\Person(), array('surname'), null, 'add');
+    }
+
+    /**
+     * @depends testFormViewProviderPriorityMatters
+     */
+    public function testFormViewProviderPriorityAfterAnotherAdd()
+    {
+        $called = $this->getMockBuilder('Codete\FormGeneratorBundle\FormViewProviderInterface')
+            ->getMock();
+        $called->expects($this->once())->method('supports');
+        $this->formGenerator->addFormViewProvider($called, 5);
+        $this->formGenerator->createFormBuilder(new Model\Person(), 'work');
+    }
     
     public function testFormConfigurationModifier()
     {
@@ -98,6 +120,28 @@ class FormGeneratorTest extends BaseTest
             ->getMock();
         $notCalled->expects($this->never())->method('supports');
         $this->formGenerator->addFormFieldResolver($notCalled);
+        $this->formGenerator->createFormBuilder(new Model\Person(), 'work');
+    }
+
+    public function testFormFieldResolverPriorityMatters()
+    {
+        $notCalled = $this->getMockBuilder('Codete\FormGeneratorBundle\FormFieldResolverInterface')
+            ->getMock();
+        $notCalled->expects($this->never())->method('supports');
+        $this->formGenerator->addFormFieldResolver($notCalled);
+        $this->formGenerator->addFormFieldResolver(new FormFieldResolver\PersonSalaryResolver(), 1);
+        $this->formGenerator->createFormBuilder(new Model\Person(), 'work');
+    }
+
+    /**
+     * @depends testFormFieldResolverPriorityMatters
+     */
+    public function testFormFieldResolverPriorityAfterAnotherAdd()
+    {
+        $called = $this->getMockBuilder('Codete\FormGeneratorBundle\FormFieldResolverInterface')
+            ->getMock();
+        $called->expects($this->once())->method('supports');
+        $this->formGenerator->addFormFieldResolver($called, 5);
         $this->formGenerator->createFormBuilder(new Model\Person(), 'work');
     }
     

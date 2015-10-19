@@ -99,7 +99,9 @@ But if you need something more sophisticated than Annotations we
 have prepared few possibilities that can be either added manually
 or by tagging your services. For each of them FormGenerator allows 
 you to pass any additional informations you want in optional 
-``$context`` argument.
+``$context`` argument. Both ways allows you to specify `priority`
+which defines order of execution (default is `0`, if two or more
+services have same priority then first added is executed first).
 
 FormViewProvider
 ----------------

@@ -8,8 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
- * FormGenerator creates populated FormBuilder for any given
- * class. Say goodbye to writing boring FormType classes!
+ * FormGenerator creates populated FormBuilder for any given class. Say goodbye to writing boring FormType classes!
  * 
  * @author Maciej Malarz <malarzm@gmail.com>
  */
@@ -21,14 +20,26 @@ class FormGenerator
     /** @var FormFactoryInterface */
     private $formFactory;
     
-    /** @var FormConfigurationModifierInterface[] */
+    /** @var FormConfigurationModifierInterface[][] */
     private $formConfigurationModifiers = array();
     
-    /** @var FormFieldResolverInterface[] */
+    /** @var FormFieldResolverInterface[][] */
     private $formFieldResolvers = array();
     
-    /** @var FormViewProviderInterface[] */
+    /** @var FormViewProviderInterface[][] */
     private $formViewProviders = array();
+
+    /** @var bool */
+    private $needsSorting = false;
+
+    /** @var FormConfigurationModifierInterface[] */
+    private $sortedFormConfigurationModifiers = array();
+
+    /** @var FormFieldResolverInterface[] */
+    private $sortedFormFieldResolvers = array();
+
+    /** @var FormViewProviderInterface[] */
+    private $sortedFormViewProviders = array();
     
     public function __construct(FormFactoryInterface $formFactory)
     {
@@ -40,30 +51,36 @@ class FormGenerator
      * Adds modifier for form's configuration
      * 
      * @param FormConfigurationModifierInterface $modifier
+     * @param int $priority
      */
-    public function addFormConfigurationModifier(FormConfigurationModifierInterface $modifier)
+    public function addFormConfigurationModifier(FormConfigurationModifierInterface $modifier, $priority = 0)
     {
-        $this->formConfigurationModifiers[] = $modifier;
+        $this->formConfigurationModifiers[$priority][] = $modifier;
+        $this->needsSorting = true;
     }
     
     /**
      * Adds resolver for form's fields
      * 
      * @param FormFieldResolverInterface $resolver
+     * @param int $priority
      */
-    public function addFormFieldResolver(FormFieldResolverInterface $resolver)
+    public function addFormFieldResolver(FormFieldResolverInterface $resolver, $priority = 0)
     {
-        $this->formFieldResolvers[] = $resolver;
+        $this->formFieldResolvers[$priority][] = $resolver;
+        $this->needsSorting = true;
     }
     
     /**
      * Adds provider for defining default fields for form
      * 
      * @param FormViewProviderInterface $provider
+     * @param int $priority
      */
-    public function addFormViewProvider(FormViewProviderInterface $provider)
+    public function addFormViewProvider(FormViewProviderInterface $provider, $priority = 0)
     {
-        $this->formViewProviders[] = $provider;
+        $this->formViewProviders[$priority][] = $provider;
+        $this->needsSorting = true;
     }
     
     /**
@@ -103,11 +120,15 @@ class FormGenerator
      * @param FormBuilderInterface $fb
      * @param object $model
      * @param string $form view to generate
+     * @param array $context
      */
     public function populateFormBuilder(FormBuilderInterface $fb, $model, $form = 'default', $context = array())
     {
+        if ($this->needsSorting) {
+            $this->sortRegisteredServices();
+        }
         $fields = null;
-        foreach ($this->formViewProviders as $provider) {
+        foreach ($this->sortedFormViewProviders as $provider) {
             if ($provider->supports($form, $model, $context)) {
                 $fields = $provider->getFields($model, $context);
                 break;
@@ -118,7 +139,7 @@ class FormGenerator
         }
         $fields = $this->normalizeFields($fields);
         $configuration = $this->getFieldsConfiguration($model, $fields);
-        foreach ($this->formConfigurationModifiers as $modifier) {
+        foreach ($this->sortedFormConfigurationModifiers as $modifier) {
             if ($modifier->supports($model, $configuration, $context)) {
                 $configuration = $modifier->modify($model, $configuration, $context);
             }
@@ -129,7 +150,7 @@ class FormGenerator
                 $type = $options['type'];
                 unset($options['type']);
             }
-            foreach ($this->formFieldResolvers as $resolver) {
+            foreach ($this->sortedFormFieldResolvers as $resolver) {
                 if ($resolver->supports($model, $field, $type, $options, $context)) {
                     $fb->add($resolver->getFormField($fb, $field, $type, $options, $context));
                     continue 2;
@@ -205,6 +226,7 @@ class FormGenerator
      * Normalizes $fields array
      * 
      * @param array $_fields
+     * @return array
      */
     private function normalizeFields($_fields)
     {
@@ -217,5 +239,21 @@ class FormGenerator
             }
         }
         return $fields;
+    }
+
+    private function sortRegisteredServices()
+    {
+        krsort($this->formConfigurationModifiers);
+        if ( ! empty($this->formConfigurationModifiers)) {
+            $this->sortedFormConfigurationModifiers = call_user_func_array('array_merge', $this->formConfigurationModifiers);
+        }
+        krsort($this->formFieldResolvers);
+        if ( ! empty($this->formFieldResolvers)) {
+            $this->sortedFormFieldResolvers = call_user_func_array('array_merge', $this->formFieldResolvers);
+        }
+        krsort($this->formViewProviders);
+        if ( ! empty($this->formViewProviders)) {
+            $this->sortedFormViewProviders = call_user_func_array('array_merge', $this->formViewProviders);
+        }
     }
 }
