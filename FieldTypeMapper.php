@@ -13,8 +13,12 @@ class FieldTypeMapper
      * @param string $type
      * @return string
      */
-    public static function map($type = 'text')
+    public static function map($type)
     {
+        if (is_null($type)) {
+            return $type;
+        }
+
         $formattedType = ucfirst(strtolower($type));
         foreach (self::$typeNS as $nameSpace) {
             if (class_exists($nameSpace.'\\'.$formattedType.'Type')) {
