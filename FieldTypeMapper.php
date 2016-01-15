@@ -15,7 +15,9 @@ class FieldTypeMapper
      */
     public static function map($type)
     {
-        if (is_null($type)) {
+        $sfVersion = intval(\Symfony\Component\HttpKernel\Kernel::VERSION);
+
+        if (is_null($type) || $sfVersion < 3) {
             return $type;
         }
 
