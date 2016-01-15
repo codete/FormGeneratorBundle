@@ -8,15 +8,11 @@ php:
   - hhvm
  
 env:
-  - SYMFONY_VERSION=2.3.*
+  - SYMFONY_VERSION=2.7.*
 
 before_script:
   - composer require symfony/symfony:${SYMFONY_VERSION} --prefer-source
   - composer install --dev --prefer-source
-
-notifications:
-  email:
-    - malarzm@gmail.com
 
 matrix:
   allow_failures:
@@ -24,9 +20,15 @@ matrix:
     - php: hhvm
   include:
     - php: 5.5
-      env: SYMFONY_VERSION=2.4.*
+      env: SYMFONY_VERSION=2.7.*
     - php: 5.5
-      env: SYMFONY_VERSION=2.5.*
+      env: SYMFONY_VERSION=2.8.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.8.*
     - php: 5.5
-      env: SYMFONY_VERSION=dev-master
+      env: SYMFONY_VERSION=3.0.*
+    - php: 5.6
+      env: SYMFONY_VERSION=3.0.*
+    - php: 7.0
+      env: SYMFONY_VERSION=3.0.*
 
