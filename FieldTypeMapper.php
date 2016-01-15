@@ -4,10 +4,10 @@ namespace Codete\FormGeneratorBundle;
 
 class FieldTypeMapper
 {
-    protected static $typeNS = [
+    protected static $typeNS = array(
         'Symfony\\Component\\Form\\Extension\\Core\\Type',
         'Symfony\\Bridge\\Doctrine\\Form\\Type'
-    ];
+    );
 
     /**
      * @param string $type
