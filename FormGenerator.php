@@ -9,23 +9,23 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * FormGenerator creates populated FormBuilder for any given class. Say goodbye to writing boring FormType classes!
- * 
+ *
  * @author Maciej Malarz <malarzm@gmail.com>
  */
 class FormGenerator
 {
     /** @var Reader */
     private $annotationReader;
-    
+
     /** @var FormFactoryInterface */
     private $formFactory;
-    
+
     /** @var FormConfigurationModifierInterface[][] */
     private $formConfigurationModifiers = array();
-    
+
     /** @var FormFieldResolverInterface[][] */
     private $formFieldResolvers = array();
-    
+
     /** @var FormViewProviderInterface[][] */
     private $formViewProviders = array();
 
@@ -40,16 +40,16 @@ class FormGenerator
 
     /** @var FormViewProviderInterface[] */
     private $sortedFormViewProviders = array();
-    
+
     public function __construct(FormFactoryInterface $formFactory)
     {
         $this->annotationReader = new AnnotationReader();
         $this->formFactory = $formFactory;
     }
-    
+
     /**
      * Adds modifier for form's configuration
-     * 
+     *
      * @param FormConfigurationModifierInterface $modifier
      * @param int $priority
      */
@@ -58,10 +58,10 @@ class FormGenerator
         $this->formConfigurationModifiers[$priority][] = $modifier;
         $this->needsSorting = true;
     }
-    
+
     /**
      * Adds resolver for form's fields
-     * 
+     *
      * @param FormFieldResolverInterface $resolver
      * @param int $priority
      */
@@ -70,10 +70,10 @@ class FormGenerator
         $this->formFieldResolvers[$priority][] = $resolver;
         $this->needsSorting = true;
     }
-    
+
     /**
      * Adds provider for defining default fields for form
-     * 
+     *
      * @param FormViewProviderInterface $provider
      * @param int $priority
      */
@@ -82,10 +82,10 @@ class FormGenerator
         $this->formViewProviders[$priority][] = $provider;
         $this->needsSorting = true;
     }
-    
+
     /**
      * Creates FormBuilder and populates it
-     * 
+     *
      * @param object $model data object
      * @param string $form view to generate
      * @param array $context
@@ -93,14 +93,15 @@ class FormGenerator
      */
     public function createFormBuilder($model, $form = 'default', $context = array())
     {
-        $fb = $this->formFactory->createBuilder('form', $model);
+        $fb = $this->formFactory->createBuilder(FieldTypeMapper::map('form'), $model);
+
         $this->populateFormBuilder($fb, $model, $form, $context);
         return $fb;
     }
-    
+
     /**
      * Creates named FormBuilder and populates it
-     * 
+     *
      * @param string $name
      * @param object $model data object
      * @param string $form view to generate
@@ -109,14 +110,15 @@ class FormGenerator
      */
     public function createNamedFormBuilder($name, $model, $form = 'default', $context = array())
     {
-        $fb = $this->formFactory->createNamedBuilder($name, 'form', $model);
+        $fb = $this->formFactory->createNamedBuilder($name, FieldTypeMapper::map('form'), $model);
+
         $this->populateFormBuilder($fb, $model, $form, $context);
         return $fb;
     }
-    
+
     /**
      * Populates FormBuilder
-     * 
+     *
      * @param FormBuilderInterface $fb
      * @param object $model
      * @param string $form view to generate
@@ -147,7 +149,7 @@ class FormGenerator
         foreach ($configuration as $field => $options) {
             $type = null;
             if (isset($options['type'])) {
-                $type = $options['type'];
+                $type = FieldTypeMapper::map($options['type']);
                 unset($options['type']);
             }
             foreach ($this->sortedFormFieldResolvers as $resolver) {
@@ -159,10 +161,10 @@ class FormGenerator
             $fb->add($field, $type, $options);
         }
     }
-    
+
     /**
      * Creates form configuration for $model for given $fields
-     * 
+     *
      * @param object $model
      * @param array $fields
      * @return array
@@ -191,15 +193,15 @@ class FormGenerator
             if (isset($fields[$property->getName()])) {
                 $configuration[$property->getName()] = array_replace_recursive($configuration[$property->getName()], $fields[$property->getName()]);
             }
-            // this variable comes from Doctrine\Common\Annotations\Annotation 
+            // this variable comes from Doctrine\Common\Annotations\Annotation
             unset($configuration[$property->getName()]['value']);
         }
         return $configuration;
     }
-    
+
     /**
      * Gets field list from $model basing on its Form annotation.
-     * 
+     *
      * @param object $model
      * @param string $form view
      * @return array list of fields (or empty for all fields)
@@ -221,10 +223,10 @@ class FormGenerator
         }
         return $formAnnotation->getForm($form);
     }
-    
+
     /**
      * Normalizes $fields array
-     * 
+     *
      * @param array $_fields
      * @return array
      */

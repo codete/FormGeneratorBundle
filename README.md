@@ -75,6 +75,8 @@ Voila! Form for editing all annotated properties is generated for us.
 We could even omit ``type=".."`` in annotations if Symfony will be
 able to guess field type for us.
 
+**Since Symfony 3.0, if you use a custom form type, you must specify the complete namespace when specifying type**
+
 We have also defined additional form views in ``@Form\Form`` 
 annotation so we can add another argument to ``createFormBuilder``
 

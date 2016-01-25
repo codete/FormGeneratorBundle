@@ -8,7 +8,7 @@ use Codete\FormGeneratorBundle\Annotations as Form;
  * @Form\Form(
  *   default = {
  *     "title" = { "attr" = { "class" = "foo" } },
- *     "author" = { "type" = "choice", "choices" = { "foo" = "foo", "bar" = "bar" } }
+ *     "author" = { "type" = "choice", "choices" = { "foo" = "foo", "bar" = "bar" }, "choices_as_values" = true }
  *   },
  *   only_title = {
  *     "title"
