@@ -8,6 +8,11 @@
         <service id="form_generator" class="Codete\FormGeneratorBundle\FormGenerator">
             <argument type="service" id="form.factory"/>
         </service>
+
+        <service id="form_generator.type.embed" class="Codete\FormGeneratorBundle\Form\Type\EmbedType">
+            <tag name="form.type" alias="embed" />
+            <argument type="service" id="form_generator" />
+        </service>
         
     </services>
     

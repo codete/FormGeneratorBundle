@@ -9,6 +9,7 @@ class FieldTypeMapper
     private static $typeNS = [
         'Symfony\\Component\\Form\\Extension\\Core\\Type',
         'Symfony\\Bridge\\Doctrine\\Form\\Type',
+        'Codete\\FormGeneratorBundle\\Form\\Type',
     ];
 
     /**
