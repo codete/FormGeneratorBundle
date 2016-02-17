@@ -2,8 +2,32 @@
 
 namespace Codete\FormGeneratorBundle\Tests;
 
+use Codete\FormGeneratorBundle\FieldTypeMapper;
+use Codete\FormGeneratorBundle\Form\Type\EmbedType;
+use Codete\FormGeneratorBundle\Tests\FormConfigurationModifier\InactivePersonModifier;
+use Codete\FormGeneratorBundle\Tests\FormConfigurationModifier\NoPhotoPersonModifier;
+use Codete\FormGeneratorBundle\Tests\Model\Person;
+use Codete\FormGeneratorBundle\Tests\Model\SimpleParent;
+use Symfony\Component\Form\PreloadedExtension;
+
 class FormGeneratorTest extends BaseTest
 {
+    /**
+     * @var PreloadedExtension
+     */
+    protected $embedTypeExtension;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $embedType = new EmbedType($this->formGenerator);
+
+        $this->embedTypeExtension = new PreloadedExtension([
+            $embedType->getBlockPrefix() => $embedType,
+        ], []);
+    }
+
     /**
      * @dataProvider provideDefaultForm
      */
@@ -171,5 +195,38 @@ class FormGeneratorTest extends BaseTest
         if ($additionalCheck !== null) {
             $additionalCheck($this, $form);
         }
+    }
+
+    public function testEmbedForms()
+    {
+        $sp = new SimpleParent();
+
+        $sp->employee = new Person();
+        $sp->named = new Person();
+
+        $sp->employee->salary = 1390.86;
+        $sp->named->active = false;
+
+        $sp->person = new Person('Bar', 'Baz');
+
+        $fb = $this->formFactoryBuilder
+            ->addExtension($this->embedTypeExtension)
+            ->getFormFactory()
+            ->createBuilder(FieldTypeMapper::map('form'), $sp);
+
+        $this->formGenerator->addFormConfigurationModifier(new NoPhotoPersonModifier());
+        $this->formGenerator->addFormConfigurationModifier(new InactivePersonModifier());
+        $this->formGenerator->populateFormBuilder($fb, $sp);
+        $form = $fb->getForm();
+        $this->assertEquals(count(array('person', 'noName', 'anonymous', 'employee')), count($form));
+        $this->assertEquals(count(array('title', 'name', 'surname', 'photo', 'active', 'salary')), $form->get('person')->count());
+        $this->assertEquals(count(array('title', 'name', 'surname', 'photo', 'active')), $form->get('named')->count());
+        $this->assertEquals(count(array('title', 'name', 'surname', 'active', 'salary')), $form->get('anonymous')->count());
+        $this->assertEquals(count(array('salary')), $form->get('employee')->count());
+        $this->assertEquals(1390.86, $form->get('employee')->get('salary')->getData());
+        $this->assertNull($form->get('anonymous')->get('name')->getData());
+        $this->assertEquals('Foo', $form->get('named')->get('name')->getData());
+        $this->assertEquals('Bar', $form->get('person')->get('name')->getData());
+        $this->assertEquals('Baz', $form->get('person')->get('surname')->getData());
     }
 }
