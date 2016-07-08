@@ -2,13 +2,13 @@
 
 namespace Codete\FormGeneratorBundle;
 
-use Symfony\Component\HttpKernel\Kernel;
-
 class FieldTypeMapper
 {
-    protected static $typeNS = array(
+    private static $typeFQCN = null;
+
+    private static $typeNS = array(
         'Symfony\\Component\\Form\\Extension\\Core\\Type',
-        'Symfony\\Bridge\\Doctrine\\Form\\Type'
+        'Symfony\\Bridge\\Doctrine\\Form\\Type',
     );
 
     /**
@@ -17,16 +17,18 @@ class FieldTypeMapper
      */
     public static function map($type)
     {
-        $sfVersion = intval(Kernel::VERSION);
+        if (self::$typeFQCN === null) {
+            self::$typeFQCN = method_exists('\Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+        }
 
-        if (is_null($type) || $sfVersion < 3) {
+        if (! self::$typeFQCN || $type === null) {
             return $type;
         }
 
         $formattedType = ucfirst($type);
         foreach (self::$typeNS as $nameSpace) {
-            if (class_exists($nameSpace.'\\'.$formattedType.'Type')) {
-                return $nameSpace.'\\'.$formattedType.'Type';
+            if (class_exists($nameSpace . '\\' . $formattedType . 'Type')) {
+                return $nameSpace . '\\' . $formattedType . 'Type';
             }
         }
 

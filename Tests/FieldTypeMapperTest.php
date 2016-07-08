@@ -17,9 +17,7 @@ class FieldTypeMapperTest extends BaseTest
 
     public function dataProvider()
     {
-        $sfVersion = \Symfony\Component\HttpKernel\Kernel::MAJOR_VERSION;
-
-        if ($sfVersion < 3) {
+        if (! method_exists('\Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
             return array(
                 array('choice', 'choice'),
                 array('text', 'text'),
