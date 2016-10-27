@@ -8,14 +8,14 @@ class FormTest extends \PHPUnit_Framework_TestCase
 {
     public function testDefaultAlwaysExists()
     {
-        $f = new Form(array());
-        $this->assertSame(array(), $f->getForm('default'));
+        $f = new Form([]);
+        $this->assertSame([], $f->getForm('default'));
     }
     
     public function testDefaultCanBeOverwritten()
     {
-        $d = array('foo' => 'bar');
-        $f = new Form(array('default' => $d));
+        $d = ['foo' => 'bar'];
+        $f = new Form(['default' => $d]);
         $this->assertSame($d, $f->getForm('default'));
     }
     
@@ -25,14 +25,14 @@ class FormTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnknownFormThrowsException()
     {
-        $f = new Form(array());
+        $f = new Form([]);
         $f->getForm('foo');
     }
     
     public function testNonDefaultForm()
     {
-        $foo = array('foo' => 'bar', 'baz');
-        $f = new Form(array('foo' => $foo));
+        $foo = ['foo' => 'bar', 'baz'];
+        $f = new Form(['foo' => $foo]);
         $this->assertSame($foo, $f->getForm('foo'));
     }
 }

@@ -14,7 +14,7 @@ class FieldResolversCompilerPassTest extends \PHPUnit_Framework_TestCase
         $modifier = new Definition();
         $modifier->addTag('form_generator.field_resolver');
         $importantResolver = new Definition();
-        $importantResolver->addTag('form_generator.field_resolver', array('priority' => 255));
+        $importantResolver->addTag('form_generator.field_resolver', ['priority' => 255]);
 
         $container = new ContainerBuilder;
         $container->setDefinition('form_generator', $fg);

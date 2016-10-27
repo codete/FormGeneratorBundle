@@ -26,7 +26,7 @@ class ViewProvidersCompilerPass implements CompilerPassInterface {
                     }
                     $formGenerator->addMethodCall(
                         'addFormViewProvider',
-                        array(new Reference($id), (int) $attributes['priority'])
+                        [new Reference($id), (int) $attributes['priority']]
                     );
                 }
             }

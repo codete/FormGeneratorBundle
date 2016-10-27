@@ -26,7 +26,7 @@ class FieldResolversCompilerPass implements CompilerPassInterface {
                     }
                     $formGenerator->addMethodCall(
                         'addFormFieldResolver',
-                        array(new Reference($id), (int) $attributes['priority'])
+                        [new Reference($id), (int) $attributes['priority']]
                     );
                 }
             }

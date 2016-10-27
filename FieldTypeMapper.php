@@ -6,10 +6,10 @@ class FieldTypeMapper
 {
     private static $typeFQCN = null;
 
-    private static $typeNS = array(
+    private static $typeNS = [
         'Symfony\\Component\\Form\\Extension\\Core\\Type',
         'Symfony\\Bridge\\Doctrine\\Form\\Type',
-    );
+    ];
 
     /**
      * @param string $type

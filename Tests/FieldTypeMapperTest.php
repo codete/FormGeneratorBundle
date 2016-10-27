@@ -18,21 +18,21 @@ class FieldTypeMapperTest extends BaseTest
     public function dataProvider()
     {
         if (! method_exists('\Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            return array(
-                array('choice', 'choice'),
-                array('text', 'text'),
-                array('dateTime', 'dateTime'),
-                array(null, null),
-                array('unknown', 'unknown'),
-            );
+            return [
+                ['choice', 'choice'],
+                ['text', 'text'],
+                ['dateTime', 'dateTime'],
+                [null, null],
+                ['unknown', 'unknown'],
+            ];
         } else {
-            return array(
-                array('choice', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType'),
-                array('text', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType'),
-                array('dateTime', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType'),
-                array(null, null),
-                array('unknown', 'unknown'),
-            );
+            return [
+                ['choice', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType'],
+                ['text', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType'],
+                ['dateTime', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType'],
+                [null, null],
+                ['unknown', 'unknown'],
+            ];
         }
     }
 }

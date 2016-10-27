@@ -21,25 +21,25 @@ class FormGenerator
     private $formFactory;
 
     /** @var FormConfigurationModifierInterface[][] */
-    private $formConfigurationModifiers = array();
+    private $formConfigurationModifiers = [];
 
     /** @var FormFieldResolverInterface[][] */
-    private $formFieldResolvers = array();
+    private $formFieldResolvers = [];
 
     /** @var FormViewProviderInterface[][] */
-    private $formViewProviders = array();
+    private $formViewProviders = [];
 
     /** @var bool */
     private $needsSorting = false;
 
     /** @var FormConfigurationModifierInterface[] */
-    private $sortedFormConfigurationModifiers = array();
+    private $sortedFormConfigurationModifiers = [];
 
     /** @var FormFieldResolverInterface[] */
-    private $sortedFormFieldResolvers = array();
+    private $sortedFormFieldResolvers = [];
 
     /** @var FormViewProviderInterface[] */
-    private $sortedFormViewProviders = array();
+    private $sortedFormViewProviders = [];
 
     public function __construct(FormFactoryInterface $formFactory)
     {
@@ -91,7 +91,7 @@ class FormGenerator
      * @param array $context
      * @return FormBuilderInterface
      */
-    public function createFormBuilder($model, $form = 'default', $context = array())
+    public function createFormBuilder($model, $form = 'default', $context = [])
     {
         $fb = $this->formFactory->createBuilder(FieldTypeMapper::map('form'), $model);
 
@@ -108,7 +108,7 @@ class FormGenerator
      * @param array $context
      * @return FormBuilderInterface
      */
-    public function createNamedFormBuilder($name, $model, $form = 'default', $context = array())
+    public function createNamedFormBuilder($name, $model, $form = 'default', $context = [])
     {
         $fb = $this->formFactory->createNamedBuilder($name, FieldTypeMapper::map('form'), $model);
 
@@ -124,7 +124,7 @@ class FormGenerator
      * @param string $form view to generate
      * @param array $context
      */
-    public function populateFormBuilder(FormBuilderInterface $fb, $model, $form = 'default', $context = array())
+    public function populateFormBuilder(FormBuilderInterface $fb, $model, $form = 'default', $context = [])
     {
         if ($this->needsSorting) {
             $this->sortRegisteredServices();
@@ -169,9 +169,9 @@ class FormGenerator
      * @param array $fields
      * @return array
      */
-    private function getFieldsConfiguration($model, $fields = array())
+    private function getFieldsConfiguration($model, $fields = [])
     {
-        $configuration = $properties = array();
+        $configuration = $properties = [];
         $ro = new \ReflectionObject($model);
         if (empty($fields)) {
             $properties = $ro->getProperties();
@@ -219,7 +219,7 @@ class FormGenerator
             }
         }
         if ($formAnnotation === null) {
-            $formAnnotation = new Annotations\Form(array());
+            $formAnnotation = new Annotations\Form([]);
         }
         return $formAnnotation->getForm($form);
     }
@@ -232,12 +232,12 @@ class FormGenerator
      */
     private function normalizeFields($_fields)
     {
-        $fields = array();
+        $fields = [];
         foreach ($_fields as $key => $value) {
             if (is_array($value)) {
                 $fields[$key] = $value;
             } else {
-                $fields[$value] = array();
+                $fields[$value] = [];
             }
         }
         return $fields;

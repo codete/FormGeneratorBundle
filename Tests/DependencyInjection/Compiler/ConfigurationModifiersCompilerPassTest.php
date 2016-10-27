@@ -14,7 +14,7 @@ class ConfigurationModifiersCompilerPassTest extends \PHPUnit_Framework_TestCase
         $modifier = new Definition();
         $modifier->addTag('form_generator.configuration_modifier');
         $importantModifier = new Definition();
-        $importantModifier->addTag('form_generator.configuration_modifier', array('priority' => 255));
+        $importantModifier->addTag('form_generator.configuration_modifier', ['priority' => 255]);
 
         $container = new ContainerBuilder;
         $container->setDefinition('form_generator', $fg);
