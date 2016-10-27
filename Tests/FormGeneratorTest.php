@@ -216,13 +216,14 @@ class FormGeneratorTest extends BaseTest
 
         $this->formGenerator->addFormConfigurationModifier(new NoPhotoPersonModifier());
         $this->formGenerator->addFormConfigurationModifier(new InactivePersonModifier());
+
         $this->formGenerator->populateFormBuilder($fb, $sp);
         $form = $fb->getForm();
-        $this->assertEquals(count(array('person', 'noName', 'anonymous', 'employee')), count($form));
-        $this->assertEquals(count(array('title', 'name', 'surname', 'photo', 'active', 'salary')), $form->get('person')->count());
-        $this->assertEquals(count(array('title', 'name', 'surname', 'photo', 'active')), $form->get('named')->count());
-        $this->assertEquals(count(array('title', 'name', 'surname', 'active', 'salary')), $form->get('anonymous')->count());
-        $this->assertEquals(count(array('salary')), $form->get('employee')->count());
+        $this->assertEquals(count(['person', 'noName', 'anonymous', 'employee']), count($form));
+        $this->assertEquals(count(['title', 'name', 'surname', 'photo', 'active', 'salary']), $form->get('person')->count());
+        $this->assertEquals(count(['title', 'name', 'surname', 'photo', 'active']), $form->get('named')->count());
+        $this->assertEquals(count(['title', 'name', 'surname', 'active', 'salary']), $form->get('anonymous')->count());
+        $this->assertEquals(count(['salary']), $form->get('employee')->count());
         $this->assertEquals(1390.86, $form->get('employee')->get('salary')->getData());
         $this->assertNull($form->get('anonymous')->get('name')->getData());
         $this->assertEquals('Foo', $form->get('named')->get('name')->getData());

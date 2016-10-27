@@ -39,12 +39,12 @@ class EmbedType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'view' => 'default',
             'class' => '',
-            'context' => array(),
+            'context' => [],
             'model' => null
-        ));
+        ]);
     }
 
     /**
