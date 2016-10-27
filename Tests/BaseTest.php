@@ -14,7 +14,7 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $loader = require __DIR__.'/../vendor/autoload.php';
-        AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
+        AnnotationRegistry::registerLoader([$loader, 'loadClass']);
         $this->formGenerator = new FormGenerator(
             Forms::createFormFactoryBuilder()->getFormFactory()
         );

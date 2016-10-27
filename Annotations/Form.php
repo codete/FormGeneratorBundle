@@ -10,7 +10,7 @@ namespace Codete\FormGeneratorBundle\Annotations;
  */
 class Form extends \Doctrine\Common\Annotations\Annotation
 {
-    private $forms = array();
+    private $forms = [];
     
     public function __set($name, $value) 
     {
@@ -21,7 +21,7 @@ class Form extends \Doctrine\Common\Annotations\Annotation
     {
         if (!isset($this->forms[$form])) {
             if ($form === 'default') {
-                return array();
+                return [];
             }
             throw new \InvalidArgumentException("Unknown form '$form'");
         }

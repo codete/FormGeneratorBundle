@@ -14,7 +14,7 @@ class ViewProvidersCompilerPassTest extends \PHPUnit_Framework_TestCase
         $provider = new Definition();
         $provider->addTag('form_generator.view_provider');
         $importantProvider = new Definition();
-        $importantProvider->addTag('form_generator.view_provider', array('priority' => 255));
+        $importantProvider->addTag('form_generator.view_provider', ['priority' => 255]);
 
         $container = new ContainerBuilder;
         $container->setDefinition('form_generator', $fg);

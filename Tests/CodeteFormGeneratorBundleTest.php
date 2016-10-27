@@ -14,9 +14,9 @@ class CodeteFormGeneratorBundleTest extends \PHPUnit_Framework_TestCase
         $container->expects($this->exactly(3))
                 ->method('addCompilerPass')
                 ->withConsecutive(
-                        array($this->isInstanceOf('Codete\FormGeneratorBundle\DependencyInjection\Compiler\ConfigurationModifiersCompilerPass')),
-                        array($this->isInstanceOf('Codete\FormGeneratorBundle\DependencyInjection\Compiler\FieldResolversCompilerPass')),
-                        array($this->isInstanceOf('Codete\FormGeneratorBundle\DependencyInjection\Compiler\ViewProvidersCompilerPass'))
+                        [$this->isInstanceOf('Codete\FormGeneratorBundle\DependencyInjection\Compiler\ConfigurationModifiersCompilerPass')],
+                        [$this->isInstanceOf('Codete\FormGeneratorBundle\DependencyInjection\Compiler\FieldResolversCompilerPass')],
+                        [$this->isInstanceOf('Codete\FormGeneratorBundle\DependencyInjection\Compiler\ViewProvidersCompilerPass')]
                 );
         $bundle = new CodeteFormGeneratorBundle();
         $bundle->build($container);

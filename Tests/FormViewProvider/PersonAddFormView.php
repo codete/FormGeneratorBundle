@@ -9,7 +9,7 @@ class PersonAddFormView implements FormViewProviderInterface
 {
     public function getFields($model, $context) 
     {
-        return array('surname');
+        return ['surname'];
     }
 
     public function supports($form, $model, $context) 

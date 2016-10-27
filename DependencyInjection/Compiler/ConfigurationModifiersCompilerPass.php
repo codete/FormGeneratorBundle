@@ -26,7 +26,7 @@ class ConfigurationModifiersCompilerPass implements CompilerPassInterface {
                     }
                     $formGenerator->addMethodCall(
                         'addFormConfigurationModifier',
-                        array(new Reference($id), (int) $attributes['priority'])
+                        [new Reference($id), (int) $attributes['priority']]
                     );
                 }
             }

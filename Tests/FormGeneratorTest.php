@@ -14,18 +14,18 @@ class FormGeneratorTest extends BaseTest
     
     public function provideDefaultForm()
     {
-        return array(
-            array(new Model\Simple(), array('title')),
-            array(new Model\SimpleNotOverridingDefaultView(), array('author', 'title')),
-            array(new Model\SimpleOverridingDefaultView(), array('title', 'author'), function($phpunit, $form) {
+        return [
+            [new Model\Simple(), ['title']],
+            [new Model\SimpleNotOverridingDefaultView(), ['author', 'title']],
+            [new Model\SimpleOverridingDefaultView(), ['title', 'author'], function($phpunit, $form) {
                 $titleOptions = $form->get('title')->getConfig()->getOptions();
                 $phpunit->assertEquals('foo', $titleOptions['attr']['class']);
                 $authorConfig = $form->get('author')->getConfig();
                 $phpunit->assertInstanceOf('Symfony\Component\Form\Extension\Core\Type\ChoiceType', $authorConfig->getType()->getInnerType());
                 $authorOptions = $authorConfig->getOptions();
-                $phpunit->assertSame(array('foo' => 'foo', 'bar' => 'bar'), $authorOptions['choices']);
-            }),
-        );
+                $phpunit->assertSame(['foo' => 'foo', 'bar' => 'bar'], $authorOptions['choices']);
+            }],
+        ];
     }
     
     public function testNamedForm()
@@ -36,12 +36,12 @@ class FormGeneratorTest extends BaseTest
     
     public function testFormViewDefinedInAnnotation()
     {
-        $this->checkForm(new Model\SimpleOverridingDefaultView(), array('title'), null, 'only_title');
+        $this->checkForm(new Model\SimpleOverridingDefaultView(), ['title'], null, 'only_title');
     }
     
     public function testFieldProvidedButNotAnnotated()
     {
-        $this->checkForm(new Model\Person(), array('id', 'surname'), null, 'admin');
+        $this->checkForm(new Model\Person(), ['id', 'surname'], null, 'admin');
     }
     
     /**
@@ -56,7 +56,7 @@ class FormGeneratorTest extends BaseTest
     public function testFormViewProvider()
     {
         $this->formGenerator->addFormViewProvider(new FormViewProvider\PersonAddFormView());
-        $this->checkForm(new Model\Person(), array('surname'), null, 'add');
+        $this->checkForm(new Model\Person(), ['surname'], null, 'add');
     }
     
     public function testFormViewProviderOrderMatters()
@@ -66,7 +66,7 @@ class FormGeneratorTest extends BaseTest
             ->getMock();
         $notCalled->expects($this->never())->method('supports');
         $this->formGenerator->addFormViewProvider($notCalled);
-        $this->checkForm(new Model\Person(), array('surname'), null, 'add');
+        $this->checkForm(new Model\Person(), ['surname'], null, 'add');
     }
 
     public function testFormViewProviderPriorityMatters()
@@ -76,7 +76,7 @@ class FormGeneratorTest extends BaseTest
         $notCalled->expects($this->never())->method('supports');
         $this->formGenerator->addFormViewProvider($notCalled);
         $this->formGenerator->addFormViewProvider(new FormViewProvider\PersonAddFormView(), 1);
-        $this->checkForm(new Model\Person(), array('surname'), null, 'add');
+        $this->checkForm(new Model\Person(), ['surname'], null, 'add');
     }
 
     /**
@@ -96,13 +96,13 @@ class FormGeneratorTest extends BaseTest
         $this->formGenerator->addFormConfigurationModifier(new FormConfigurationModifier\InactivePersonModifier());
         $model = new Model\Person();
         $model->active = false;
-        $this->checkForm($model, array('title', 'name', 'surname', 'photo', 'active'));
+        $this->checkForm($model, ['title', 'name', 'surname', 'photo', 'active']);
     }
     
     public function testFormFieldResolver()
     {
         $this->formGenerator->addFormFieldResolver(new FormFieldResolver\PersonSalaryResolver());
-        $this->checkForm(new Model\Person(), array('title', 'name', 'surname', 'photo', 'active', 'salary'), function($phpunit, $form) {
+        $this->checkForm(new Model\Person(), ['title', 'name', 'surname', 'photo', 'active', 'salary'], function($phpunit, $form) {
             $config = $form->get('salary')->getConfig();
             foreach ($config->getViewTransformers() as $t) {
                 if ($t instanceof FormFieldResolver\DummyDataTransformer) {
@@ -147,17 +147,17 @@ class FormGeneratorTest extends BaseTest
     
     public function testFormAnnotationViewIsInherited()
     {
-        $this->checkForm(new Model\Director(), array('title', 'name', 'surname', 'photo', 'active'), null, 'personal');
+        $this->checkForm(new Model\Director(), ['title', 'name', 'surname', 'photo', 'active'], null, 'personal');
     }
     
     public function testFormAnnotationViewCanBeOverriden()
     {
-        $this->checkForm(new Model\Director(), array('salary', 'department'), null, 'work');
+        $this->checkForm(new Model\Director(), ['salary', 'department'], null, 'work');
     }
     
     public function testAllParentsAreCheckedForDefaultFormView()
     {
-        $this->checkForm(new Model\InheritanceTest(), array('title', 'author'));
+        $this->checkForm(new Model\InheritanceTest(), ['title', 'author']);
     }
     
     /**
@@ -173,23 +173,23 @@ class FormGeneratorTest extends BaseTest
     
     public function provideFieldsNormalization()
     {
-        return array(
-            array(
-                array('foo', 'bar'),
-                array('foo' => array(), 'bar' => array())
-            ),
-            array(
-                array('foo' => array('bar' => 'baz')),
-                array('foo' => array('bar' => 'baz'))
-            ),
-            array(
-                array('foo', 'bar' => array()),
-                array('foo' => array(), 'bar' => array())
-            ),
-        );
+        return [
+            [
+                ['foo', 'bar'],
+                ['foo' => [], 'bar' => []],
+            ],
+            [
+                ['foo' => ['bar' => 'baz']],
+                ['foo' => ['bar' => 'baz']],
+            ],
+            [
+                ['foo', 'bar' => []],
+                ['foo' => [], 'bar' => []],
+            ],
+        ];
     }
     
-    protected function checkForm($model, $expectedFields, $additionalCheck = null, $form = 'default', $context = array())
+    protected function checkForm($model, $expectedFields, $additionalCheck = null, $form = 'default', $context = [])
     {
         $form = $this->formGenerator->createFormBuilder($model, $form, $context)->getForm();
         $this->assertEquals(count($expectedFields), count($form));
