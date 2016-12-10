@@ -14,35 +14,18 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class FormGenerator
 {
+    /** @var AdjusterRegistry */
+    private $adjusterRegistry;
+
     /** @var Reader */
     private $annotationReader;
 
     /** @var FormFactoryInterface */
     private $formFactory;
 
-    /** @var FormConfigurationModifierInterface[][] */
-    private $formConfigurationModifiers = [];
-
-    /** @var FormFieldResolverInterface[][] */
-    private $formFieldResolvers = [];
-
-    /** @var FormViewProviderInterface[][] */
-    private $formViewProviders = [];
-
-    /** @var bool */
-    private $needsSorting = false;
-
-    /** @var FormConfigurationModifierInterface[] */
-    private $sortedFormConfigurationModifiers = [];
-
-    /** @var FormFieldResolverInterface[] */
-    private $sortedFormFieldResolvers = [];
-
-    /** @var FormViewProviderInterface[] */
-    private $sortedFormViewProviders = [];
-
     public function __construct(FormFactoryInterface $formFactory)
     {
+        $this->adjusterRegistry = new AdjusterRegistry();
         $this->annotationReader = new AnnotationReader();
         $this->formFactory = $formFactory;
     }
@@ -55,8 +38,7 @@ class FormGenerator
      */
     public function addFormConfigurationModifier(FormConfigurationModifierInterface $modifier, $priority = 0)
     {
-        $this->formConfigurationModifiers[$priority][] = $modifier;
-        $this->needsSorting = true;
+        $this->adjusterRegistry->addFormConfigurationModifier($modifier, $priority);
     }
 
     /**
@@ -67,8 +49,7 @@ class FormGenerator
      */
     public function addFormFieldResolver(FormFieldResolverInterface $resolver, $priority = 0)
     {
-        $this->formFieldResolvers[$priority][] = $resolver;
-        $this->needsSorting = true;
+        $this->adjusterRegistry->addFormFieldResolver($resolver, $priority);
     }
 
     /**
@@ -79,8 +60,7 @@ class FormGenerator
      */
     public function addFormViewProvider(FormViewProviderInterface $provider, $priority = 0)
     {
-        $this->formViewProviders[$priority][] = $provider;
-        $this->needsSorting = true;
+        $this->adjusterRegistry->addFormViewProvider($provider, $priority);
     }
 
     /**
@@ -126,11 +106,8 @@ class FormGenerator
      */
     public function populateFormBuilder(FormBuilderInterface $fb, $model, $form = 'default', $context = [])
     {
-        if ($this->needsSorting) {
-            $this->sortRegisteredServices();
-        }
         $fields = null;
-        foreach ($this->sortedFormViewProviders as $provider) {
+        foreach ($this->adjusterRegistry->getFormViewProviders() as $provider) {
             if ($provider->supports($form, $model, $context)) {
                 $fields = $provider->getFields($model, $context);
                 break;
@@ -141,7 +118,7 @@ class FormGenerator
         }
         $fields = $this->normalizeFields($fields);
         $configuration = $this->getFieldsConfiguration($model, $fields);
-        foreach ($this->sortedFormConfigurationModifiers as $modifier) {
+        foreach ($this->adjusterRegistry->getFormConfigurationModifiers() as $modifier) {
             if ($modifier->supports($model, $configuration, $context)) {
                 $configuration = $modifier->modify($model, $configuration, $context);
             }
@@ -152,7 +129,7 @@ class FormGenerator
                 $type = FieldTypeMapper::map($options['type']);
                 unset($options['type']);
             }
-            foreach ($this->sortedFormFieldResolvers as $resolver) {
+            foreach ($this->adjusterRegistry->getFormFieldResolvers() as $resolver) {
                 if ($resolver->supports($model, $field, $type, $options, $context)) {
                     $fb->add($resolver->getFormField($fb, $field, $type, $options, $context));
                     continue 2;
@@ -241,21 +218,5 @@ class FormGenerator
             }
         }
         return $fields;
-    }
-
-    private function sortRegisteredServices()
-    {
-        krsort($this->formConfigurationModifiers);
-        if ( ! empty($this->formConfigurationModifiers)) {
-            $this->sortedFormConfigurationModifiers = call_user_func_array('array_merge', $this->formConfigurationModifiers);
-        }
-        krsort($this->formFieldResolvers);
-        if ( ! empty($this->formFieldResolvers)) {
-            $this->sortedFormFieldResolvers = call_user_func_array('array_merge', $this->formFieldResolvers);
-        }
-        krsort($this->formViewProviders);
-        if ( ! empty($this->formViewProviders)) {
-            $this->sortedFormViewProviders = call_user_func_array('array_merge', $this->formViewProviders);
-        }
     }
 }
