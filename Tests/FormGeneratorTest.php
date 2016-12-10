@@ -160,35 +160,6 @@ class FormGeneratorTest extends BaseTest
         $this->checkForm(new Model\InheritanceTest(), ['title', 'author']);
     }
     
-    /**
-     * @dataProvider provideFieldsNormalization
-     */
-    public function testFieldsNormalization($toNormalize, $expected)
-    {
-        $r = new \ReflectionObject($this->formGenerator);
-        $m = $r->getMethod('normalizeFields');
-        $m->setAccessible(true);
-        $this->assertSame($expected, $m->invoke($this->formGenerator, $toNormalize));
-    }
-    
-    public function provideFieldsNormalization()
-    {
-        return [
-            [
-                ['foo', 'bar'],
-                ['foo' => [], 'bar' => []],
-            ],
-            [
-                ['foo' => ['bar' => 'baz']],
-                ['foo' => ['bar' => 'baz']],
-            ],
-            [
-                ['foo', 'bar' => []],
-                ['foo' => [], 'bar' => []],
-            ],
-        ];
-    }
-    
     protected function checkForm($model, $expectedFields, callable $additionalCheck = null, $form = 'default', $context = [])
     {
         $form = $this->formGenerator->createFormBuilder($model, $form, $context)->getForm();
