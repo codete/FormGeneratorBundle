@@ -109,7 +109,7 @@ class FormGeneratorTest extends BaseTest
                     return true;
                 }
             }
-            throw new Exception('DummyDataTransformer has not been found');
+            throw new \Exception('DummyDataTransformer has not been found');
         });
     }
     
@@ -189,7 +189,7 @@ class FormGeneratorTest extends BaseTest
         ];
     }
     
-    protected function checkForm($model, $expectedFields, $additionalCheck = null, $form = 'default', $context = [])
+    protected function checkForm($model, $expectedFields, callable $additionalCheck = null, $form = 'default', $context = [])
     {
         $form = $this->formGenerator->createFormBuilder($model, $form, $context)->getForm();
         $this->assertEquals(count($expectedFields), count($form));
