@@ -6,7 +6,7 @@ use Codete\FormGeneratorBundle\DependencyInjection\Compiler\ConfigurationModifie
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class ConfigurationModifiersCompilerPassTest extends \PHPUnit_Framework_TestCase
+class ConfigurationModifiersCompilerPassTest extends \PHPUnit\Framework\TestCase
 {
     public function testProcess()
     {

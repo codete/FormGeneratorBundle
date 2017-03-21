@@ -4,7 +4,7 @@ namespace Codete\FormGeneratorBundle\Tests;
 
 use Codete\FormGeneratorBundle\CodeteFormGeneratorBundle;
 
-class CodeteFormGeneratorBundleTest extends \PHPUnit_Framework_TestCase
+class CodeteFormGeneratorBundleTest extends \PHPUnit\Framework\TestCase
 {
     public function testIfCompilerPassesAreLoaded()
     {

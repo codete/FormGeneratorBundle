@@ -6,7 +6,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Codete\FormGeneratorBundle\FormGenerator;
 use Symfony\Component\Form\Forms;
 
-abstract class BaseTest extends \PHPUnit_Framework_TestCase
+abstract class BaseTest extends \PHPUnit\Framework\TestCase
 {
     /** @var \Codete\FormGeneratorBundle\FormGenerator */
     protected $formGenerator;

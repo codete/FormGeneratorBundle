@@ -6,7 +6,7 @@ use Codete\FormGeneratorBundle\DependencyInjection\Compiler\FieldResolversCompil
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class FieldResolversCompilerPassTest extends \PHPUnit_Framework_TestCase
+class FieldResolversCompilerPassTest extends \PHPUnit\Framework\TestCase
 {
     public function testProcess()
     {
