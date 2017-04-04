@@ -24,6 +24,7 @@ class FieldTypeMapperTest extends BaseTest
                 ['dateTime', 'dateTime'],
                 [null, null],
                 ['unknown', 'unknown'],
+                ['embed', 'embed']
             ];
         } else {
             return [
@@ -32,6 +33,7 @@ class FieldTypeMapperTest extends BaseTest
                 ['dateTime', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType'],
                 [null, null],
                 ['unknown', 'unknown'],
+                ['embed', 'Codete\\FormGeneratorBundle\\Form\\Type\\EmbedType']
             ];
         }
     }

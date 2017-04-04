@@ -4,8 +4,10 @@ namespace Codete\FormGeneratorBundle;
 
 use Codete\FormGeneratorBundle\Annotations\Display;
 use Codete\FormGeneratorBundle\Annotations\Form;
+use Codete\FormGeneratorBundle\Form\Type\EmbedType;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
+use Doctrine\Instantiator\Instantiator;
 
 /**
  * FormConfigurationFactory creates initial form configuration that is adjusted later.
@@ -25,12 +27,18 @@ class FormConfigurationFactory
     private $annotationReader;
 
     /**
+     * @var Instantiator
+     */
+    private $instantiator;
+
+    /**
      * @param AdjusterRegistry $adjusterRegistry
      */
     public function __construct(AdjusterRegistry $adjusterRegistry)
     {
         $this->adjusterRegistry = $adjusterRegistry;
         $this->annotationReader = new AnnotationReader();
+        $this->instantiator = new Instantiator();
     }
 
     /**
@@ -87,6 +95,13 @@ class FormConfigurationFactory
             $configuration[$property->getName()] = (array)$fieldConfiguration;
             if (isset($fields[$property->getName()])) {
                 $configuration[$property->getName()] = array_replace_recursive($configuration[$property->getName()], $fields[$property->getName()]);
+            }
+            if ($configuration[$property->getName()]['type'] === EmbedType::TYPE) {
+                if (($value = $property->getValue($model)) === null) {
+                    $value = $this->instantiator->instantiate($configuration[$property->getName()]['class']);
+                }
+                $configuration[$property->getName()]['data_class'] = $configuration[$property->getName()]['class'];
+                $configuration[$property->getName()]['model'] = $value;
             }
             // this variable comes from Doctrine\Common\Annotations\Annotation
             unset($configuration[$property->getName()]['value']);

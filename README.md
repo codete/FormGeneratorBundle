@@ -105,6 +105,33 @@ you to pass any additional informations you want in optional
 which defines order of execution (default is `0`, if two or more
 services have same priority then first added is executed first).
 
+Embed Forms
+-----------
+
+FormGenerator will build also forms for nested models:
+
+ ``` php
+/*
+* @Form\Embed(
+*   class = "Codete\FormGeneratorBundle\Tests\Model\Person",
+* )
+*/
+public $person;
+```
+
+This will build form from all nested model properties,
+but we can specify which view we want to use:
+
+ ``` php
+/*
+* @Form\Embed(
+*   class = "Codete\FormGeneratorBundle\Tests\Model\Person",
+*   view = "work"
+* )
+*/
+public $employee;
+```
+
 FormViewProvider
 ----------------
 

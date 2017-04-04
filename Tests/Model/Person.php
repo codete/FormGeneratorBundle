@@ -44,4 +44,17 @@ class Person
      * @Form\Display(type="money")
      */
     public $salary;
+
+    /**
+     * Person constructor.
+     * @param $name
+     * @param $surname
+     */
+    public function __construct($name = 'Foo', $surname = null)
+    {
+        $this->name = $name;
+        $this->surname = $surname;
+    }
+
+
 }
