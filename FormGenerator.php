@@ -70,11 +70,12 @@ class FormGenerator
      * @param object $model data object
      * @param string $form view to generate
      * @param array $context
+     * @param array $options
      * @return FormBuilderInterface
      */
-    public function createFormBuilder($model, $form = 'default', $context = [])
+    public function createFormBuilder($model, $form = 'default', $context = [], $options=[])
     {
-        $fb = $this->formFactory->createBuilder(FieldTypeMapper::map('form'), $model);
+        $fb = $this->formFactory->createBuilder(FieldTypeMapper::map('form'), $model, $options);
 
         $this->populateFormBuilder($fb, $model, $form, $context);
         return $fb;
@@ -87,11 +88,12 @@ class FormGenerator
      * @param object $model data object
      * @param string $form view to generate
      * @param array $context
+     * @param array $options
      * @return FormBuilderInterface
      */
-    public function createNamedFormBuilder($name, $model, $form = 'default', $context = [])
+    public function createNamedFormBuilder($name, $model, $form = 'default', $context = [], $options=[])
     {
-        $fb = $this->formFactory->createNamedBuilder($name, FieldTypeMapper::map('form'), $model);
+        $fb = $this->formFactory->createNamedBuilder($name, FieldTypeMapper::map('form'), $model, $options);
 
         $this->populateFormBuilder($fb, $model, $form, $context);
         return $fb;
