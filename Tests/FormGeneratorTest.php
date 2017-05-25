@@ -57,24 +57,17 @@ class FormGeneratorTest extends BaseTest
         $form = $this->formGenerator->createNamedFormBuilder('my_form', new Model\Simple());
         $this->assertSame('my_form', $form->getName());
     }
-    
 
-    public function testNamedFormWithOptionsMethodGet(){
-        $form = $this->formGenerator->createNamedFormBuilder('my_form', new Model\Simple(),'default',[],['method'=>'GET']);
-        $this->assertSame('GET', $form->getFormConfig()->getMethod());
-    }
-
-    public function testNamedFormWithOptionsMethodPut(){
-        $form = $this->formGenerator->createNamedFormBuilder('my_form', new Model\Simple(),'default',[],['method'=>'PUT']);
+    public function testNamedFormWithOptionsMethodPut()
+    {
+        $form = $this->formGenerator->createNamedFormBuilder('my_form', new Model\Simple(), 'default', [],
+            ['method' => 'PUT']);
         $this->assertSame('PUT', $form->getFormConfig()->getMethod());
     }
 
-    public function testFormWithOptionsMethodGet(){
-        $form = $this->formGenerator->createFormBuilder( new Model\Person(),'work',[],['method'=>'GET']);
-        $this->assertSame('GET', $form->getFormConfig()->getMethod());
-    }
-    public function testFormWithOptionsMethodPut(){
-        $form = $this->formGenerator->createFormBuilder( new Model\Person(),'work',[],['method'=>'PUT']);
+    public function testFormWithOptionsMethodPut()
+    {
+        $form = $this->formGenerator->createFormBuilder(new Model\Person(), 'work', [], ['method' => 'PUT']);
         $this->assertSame('PUT', $form->getFormConfig()->getMethod());
     }
 
