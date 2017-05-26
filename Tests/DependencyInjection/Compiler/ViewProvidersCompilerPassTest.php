@@ -6,7 +6,7 @@ use Codete\FormGeneratorBundle\DependencyInjection\Compiler\ViewProvidersCompile
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class ViewProvidersCompilerPassTest extends \PHPUnit_Framework_TestCase
+class ViewProvidersCompilerPassTest extends \PHPUnit\Framework\TestCase
 {
     public function testProcess()
     {

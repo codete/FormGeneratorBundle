@@ -4,7 +4,7 @@ namespace Codete\FormGeneratorBundle\Tests\Annotations;
 
 use Codete\FormGeneratorBundle\Annotations\Form;
 
-class FormTest extends \PHPUnit_Framework_TestCase
+class FormTest extends \PHPUnit\Framework\TestCase
 {
     public function testDefaultAlwaysExists()
     {
