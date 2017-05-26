@@ -57,7 +57,20 @@ class FormGeneratorTest extends BaseTest
         $form = $this->formGenerator->createNamedFormBuilder('my_form', new Model\Simple());
         $this->assertSame('my_form', $form->getName());
     }
-    
+
+    public function testNamedFormWithOptionsMethodPut()
+    {
+        $form = $this->formGenerator->createNamedFormBuilder('my_form', new Model\Simple(), 'default', [],
+            ['method' => 'PUT']);
+        $this->assertSame('PUT', $form->getFormConfig()->getMethod());
+    }
+
+    public function testFormWithOptionsMethodPut()
+    {
+        $form = $this->formGenerator->createFormBuilder(new Model\Person(), 'work', [], ['method' => 'PUT']);
+        $this->assertSame('PUT', $form->getFormConfig()->getMethod());
+    }
+
     public function testFormViewDefinedInAnnotation()
     {
         $this->checkForm(new Model\SimpleOverridingDefaultView(), ['title'], null, 'only_title');
