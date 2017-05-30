@@ -7,6 +7,8 @@ namespace Codete\FormGeneratorBundle\DependencyInjection\Compiler;
  */
 class ConfigurationModifiersCompilerPass extends AbstractCompilerPass
 {
+    const TAG = 'form_generator.configuration_modifier';
+
     /**
      * @inheritdoc
      */
@@ -20,6 +22,6 @@ class ConfigurationModifiersCompilerPass extends AbstractCompilerPass
      */
     protected function getTagName()
     {
-        return 'form_generator.configuration_modifier';
+        return self::TAG;
     }
 }

@@ -7,6 +7,8 @@ namespace Codete\FormGeneratorBundle\DependencyInjection\Compiler;
  */
 class ViewProvidersCompilerPass extends AbstractCompilerPass
 {
+    const TAG = 'form_generator.view_provider';
+
     /**
      * @inheritdoc
      */
@@ -20,6 +22,6 @@ class ViewProvidersCompilerPass extends AbstractCompilerPass
      */
     protected function getTagName()
     {
-        return 'form_generator.view_provider';
+        return self::TAG;
     }
 }
