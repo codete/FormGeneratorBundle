@@ -65,9 +65,15 @@ Now instead of writing whole ``PersonFormType`` and populating
 FormBuilder there we can use instead:
 
 ``` php
+use Codete\FormGeneratorBundle\FormGenerator;
+
+// Symfony 3.3+ way
+$generator = $this->get(FormGenerator::class);
+// "old way"
+$generator = $this->get('form_generator');
+
 $person = new Person();
-$form = $this->get('form_generator')->createFormBuilder($person)
-        ->getForm();
+$form = $generator->createFormBuilder($person)->getForm();
 $form->handleRequest($request);
 ```
 
@@ -110,7 +116,7 @@ Embed Forms
 
 FormGenerator will build also forms for nested models:
 
- ``` php
+``` php
 /*
 * @Form\Embed(
 *   class = "Codete\FormGeneratorBundle\Tests\Model\Person",
