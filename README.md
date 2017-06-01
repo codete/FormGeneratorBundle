@@ -81,14 +81,14 @@ Voila! Form for editing all annotated properties is generated for us.
 We could even omit ``type=".."`` in annotations if Symfony will be
 able to guess field type for us.
 
-**Since Symfony 3.0, if you use a custom form type, you must specify the complete namespace when specifying type**
+**Since Symfony 3.0, if you use a custom form type, you must specify the complete
+namespace when specifying type**
 
 We have also defined additional form views in ``@Form\Form`` 
 annotation so we can add another argument to ``createFormBuilder``
 
 ``` php
-$form = $this->get('form_generator')->createFormBuilder($person, 'personal')
-        ->getForm();
+$form = $generator->createFormBuilder($person, 'personal')->getForm();
 ```
 
 And we will get Form with properties specified in annotation. We can 
@@ -110,35 +110,6 @@ you to pass any additional informations you want in optional
 ``$context`` argument. Both ways allows you to specify `priority`
 which defines order of execution (default is `0`, if two or more
 services have same priority then first added is executed first).
-
-Embed Forms
------------
-
-FormGenerator will build also forms for nested models:
-
-``` php
-/*
-* @Form\Embed(
-*   class = "Codete\FormGeneratorBundle\Tests\Model\Person",
-* )
-*/
-public $person;
-```
-
-This will build form from all nested model properties,
-but we can specify which view we want to use:
-
-``` php
-/*
-* @Form\Embed(
-*   class = "Codete\FormGeneratorBundle\Tests\Model\Person",
-*   view = "work"
-* )
-*/
-public $employee;
-```
-
----
 
 **If you have enabled [Service autoconfiguration](http://symfony.com/blog/new-in-symfony-3-3-service-autoconfiguration)
 the bundle (since version 1.2.0) will automatically tag services for you.**
@@ -200,4 +171,30 @@ class PersonSalaryResolver implements FormFieldResolverInterface
         return $model instanceof Person && $field === 'salary';
     }
 }
+```
+
+Embedded Forms
+--------------
+
+If you need embedded forms we got you covered:
+
+``` php
+/**
+ * @Form\Embed(class="Codete\FormGeneratorBundle\Tests\Model\Person")
+ */
+public $person;
+```
+
+Such sub-form will contain all annotated properties from given model.
+To specify a view for the generated embedded form just specify it in
+the configuration:
+
+``` php
+/**
+ * @Form\Embed(
+ *  class="Codete\FormGeneratorBundle\Tests\Model\Person",
+ *  view="work"
+ * )
+ */
+public $employee;
 ```
