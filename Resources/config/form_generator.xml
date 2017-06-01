@@ -13,6 +13,10 @@
             <tag name="form.type" alias="embed" />
             <argument type="service" id="form_generator" />
         </service>
+
+        <service alias="form_generator" id="Codete\FormGeneratorBundle\FormGenerator" />
+
+        <service alias="form_generator.type.embed" id="Codete\FormGeneratorBundle\Form\Type\EmbedType" />
         
     </services>
     
