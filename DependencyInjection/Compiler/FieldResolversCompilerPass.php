@@ -7,6 +7,8 @@ namespace Codete\FormGeneratorBundle\DependencyInjection\Compiler;
  */
 class FieldResolversCompilerPass extends AbstractCompilerPass
 {
+    const TAG = 'form_generator.field_resolver';
+
     /**
      * @inheritdoc
      */
@@ -20,6 +22,6 @@ class FieldResolversCompilerPass extends AbstractCompilerPass
      */
     protected function getTagName()
     {
-        return 'form_generator.field_resolver';
+        return self::TAG;
     }
 }

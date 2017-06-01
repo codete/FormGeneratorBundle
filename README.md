@@ -122,7 +122,7 @@ public $person;
 This will build form from all nested model properties,
 but we can specify which view we want to use:
 
- ``` php
+``` php
 /*
 * @Form\Embed(
 *   class = "Codete\FormGeneratorBundle\Tests\Model\Person",
@@ -131,6 +131,11 @@ but we can specify which view we want to use:
 */
 public $employee;
 ```
+
+---
+
+**If you have enabled [Service autoconfiguration](http://symfony.com/blog/new-in-symfony-3-3-service-autoconfiguration)
+the bundle (since version 1.2.0) will automatically tag services for you.**
 
 FormViewProvider
 ----------------
