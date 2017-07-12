@@ -49,6 +49,14 @@ class FormGeneratorTest extends BaseTest
                 $authorOptions = $authorConfig->getOptions();
                 $phpunit->assertSame(['foo' => 'foo', 'bar' => 'bar'], $authorOptions['choices']);
             }],
+            [new Model\DisplayOptions(), ['normal', 'options', 'optionsIgnoreInlinedFields'], function($phpunit, $form) {
+                $normal = $form->get('normal')->getConfig()->getOptions();
+                $phpunit->assertEquals('foo', $normal['attr']['class']);
+                $options = $form->get('options')->getConfig()->getOptions();
+                $phpunit->assertEquals('foo', $options['attr']['class']);
+                $optionsIgnoreInlinedFields = $form->get('optionsIgnoreInlinedFields')->getConfig()->getOptions();
+                $phpunit->assertEquals('foo', $optionsIgnoreInlinedFields['attr']['class']);
+            }]
         ];
     }
     
