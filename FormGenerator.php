@@ -127,6 +127,9 @@ class FormGenerator
                     continue 2;
                 }
             }
+            if (isset($options['options'])) {
+                $options = $options['options'];
+            }
             $fb->add($field, $type, $options);
         }
     }

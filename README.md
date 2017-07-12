@@ -84,7 +84,57 @@ able to guess field type for us.
 **Since Symfony 3.0, if you use a custom form type, you must specify the complete
 namespace when specifying type**
 
-We have also defined additional form views in ``@Form\Form`` 
+Specifying Field Options
+------------------------
+
+By default everything you specify in `@Form\Display` (except for `type`) annotation
+will be passed as an option to generated form type. To illustrate:
+
+```php
+/**
+ * @Form\Display(type="choice", choices = { "mr" = "Mr.", "ms" = "Ms." }, "attr" = { "class" = "foo" })
+ */
+public $title;
+```
+
+is equivalent to:
+
+```php
+$fb->add('title', ChoiceType::class, [
+    'choices' => [ 'mr' => 'Mr.', 'ms' => 'Ms.' ],
+    'attr' => [ 'class' => 'foo' ],
+]);
+```
+
+**Specifying field options through `options`, described below, was added in 1.3.0.**
+
+This approach has few advantages like saving you a bunch of keystrokes each time you
+are specifying options, but there are downsides too. First, if you have any custom
+option for one of your modifiers you forget to `unset`, Symfony will be unhappy and
+will let you know by throwing an exception. Another downside is that we have reserved
+`type` property and it's needed as an option for a repeated type. If you ever find
+yourself in one of described cases, or you just prefer to be explicit, you can put
+all Symfony fields' options into an `options` property:
+
+```php
+/**
+ * @Form\Display(
+ *   type="choice",
+ *   options={ "choices" = { "mr" = "Mr.", "ms" = "Ms." }, "attr" = { "class" = "foo" } }
+ * )
+ */
+public $title;
+```
+
+When Form Generator creates a form field and finds `options` property, it will pass
+them as that field's options to the `FormBuilder`. Effectively this allows you to
+separate field's options from options for your configuration modifiers which can be
+a gain on its own.
+
+Form Views
+----------
+
+In the example we have defined additional form views in ``@Form\Form``
 annotation so we can add another argument to ``createFormBuilder``
 
 ``` php
