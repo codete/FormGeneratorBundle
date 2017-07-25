@@ -5,6 +5,8 @@ namespace Codete\FormGeneratorBundle;
 use Codete\FormGeneratorBundle\Annotations\Display;
 use Codete\FormGeneratorBundle\Annotations\Form;
 use Codete\FormGeneratorBundle\Form\Type\EmbedType;
+use Codete\FormGeneratorBundle\FormField\FormFieldInterface;
+use Codete\FormGeneratorBundle\FormField\PropertyBasedField;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Instantiator\Instantiator;
@@ -83,16 +85,20 @@ class FormConfigurationFactory
                 $properties[] = $ro->getProperty($field);
             }
         }
+        /** @var FormFieldInterface[] $properties */
+        $properties = array_map(function(\ReflectionProperty $property) {
+            return new PropertyBasedField($property, $this->annotationReader);
+        }, $properties);
         foreach ($properties as $property) {
             $propertyIsListed = array_key_exists($property->getName(), $fields);
             if (!empty($fields) && !$propertyIsListed) {
                 continue;
             }
-            $fieldConfiguration = $this->annotationReader->getPropertyAnnotation($property, Display::class);
+            $fieldConfiguration = $property->getConfiguration();
             if ($fieldConfiguration === null && !$propertyIsListed) {
                 continue;
             }
-            $configuration[$property->getName()] = (array)$fieldConfiguration;
+            $configuration[$property->getName()] = (array) $fieldConfiguration;
             if (isset($fields[$property->getName()])) {
                 $configuration[$property->getName()] = array_replace_recursive($configuration[$property->getName()], $fields[$property->getName()]);
             }
