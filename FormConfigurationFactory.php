@@ -2,9 +2,13 @@
 
 namespace Codete\FormGeneratorBundle;
 
+use Codete\FormGeneratorBundle\Annotations\AdditionalFields;
 use Codete\FormGeneratorBundle\Annotations\Display;
 use Codete\FormGeneratorBundle\Annotations\Form;
 use Codete\FormGeneratorBundle\Form\Type\EmbedType;
+use Codete\FormGeneratorBundle\FormField\AdditionalField;
+use Codete\FormGeneratorBundle\FormField\FormFieldInterface;
+use Codete\FormGeneratorBundle\FormField\PropertyBasedField;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Instantiator\Instantiator;
@@ -76,11 +80,19 @@ class FormConfigurationFactory
     {
         $configuration = $properties = [];
         $ro = new \ReflectionObject($model);
+        $additionalFields = $this->getAdditionalFields($model);
         if (empty($fields)) {
-            $properties = $ro->getProperties();
+            $properties = array_map(function(\ReflectionProperty $property) {
+                return new PropertyBasedField($property, $this->annotationReader);
+            }, $ro->getProperties());
+            foreach ($additionalFields as $field => $fieldConfiguration) {
+                $properties[] = new AdditionalField($field, $fieldConfiguration);
+            }
         } else {
             foreach (array_keys($fields) as $field) {
-                $properties[] = $ro->getProperty($field);
+                $properties[] = $ro->hasProperty($field)
+                    ? new PropertyBasedField($ro->getProperty($field), $this->annotationReader)
+                    : new AdditionalField($field, $additionalFields[$field]);
             }
         }
         foreach ($properties as $property) {
@@ -88,11 +100,11 @@ class FormConfigurationFactory
             if (!empty($fields) && !$propertyIsListed) {
                 continue;
             }
-            $fieldConfiguration = $this->annotationReader->getPropertyAnnotation($property, Display::class);
+            $fieldConfiguration = $property->getConfiguration();
             if ($fieldConfiguration === null && !$propertyIsListed) {
                 continue;
             }
-            $configuration[$property->getName()] = (array)$fieldConfiguration;
+            $configuration[$property->getName()] = (array) $fieldConfiguration;
             if (isset($fields[$property->getName()])) {
                 $configuration[$property->getName()] = array_replace_recursive($configuration[$property->getName()], $fields[$property->getName()]);
             }
@@ -107,6 +119,33 @@ class FormConfigurationFactory
             unset($configuration[$property->getName()]['value']);
         }
         return $configuration;
+    }
+
+    /**
+     * Gets all additional properties defined for given model and its ancestors.
+     *
+     * @param object $model
+     * @return array
+     */
+    private function getAdditionalFields($model)
+    {
+        $inReverseOrder = [];
+        $ro = new \ReflectionObject($model);
+        do {
+            $annotation = $this->annotationReader->getClassAnnotation($ro, AdditionalFields::class);
+            if ($annotation instanceof AdditionalFields) {
+                $inReverseOrder[] = $annotation->getFields();
+            }
+        } while ($ro = $ro->getParentClass());
+
+        switch (count($inReverseOrder)) {
+            case 0:
+                return [];
+            case 1:
+                return $inReverseOrder[0];
+            default:
+                return array_replace_recursive(...array_reverse($inReverseOrder));
+        }
     }
 
     /**

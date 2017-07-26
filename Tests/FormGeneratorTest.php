@@ -8,6 +8,7 @@ use Codete\FormGeneratorBundle\Tests\FormConfigurationModifier\InactivePersonMod
 use Codete\FormGeneratorBundle\Tests\FormConfigurationModifier\NoPhotoPersonModifier;
 use Codete\FormGeneratorBundle\Tests\Model\Person;
 use Codete\FormGeneratorBundle\Tests\Model\SimpleParent;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\PreloadedExtension;
 
 class FormGeneratorTest extends BaseTest
@@ -250,5 +251,33 @@ class FormGeneratorTest extends BaseTest
         $this->assertEquals('Foo', $form->get('named')->get('name')->getData());
         $this->assertEquals('Bar', $form->get('person')->get('name')->getData());
         $this->assertEquals('Baz', $form->get('person')->get('surname')->getData());
+    }
+
+    public function testAdditionalFieldsAreAddedAndAreLast()
+    {
+        $this->checkForm(new Model\WithAdditionalFields(), ['field', 'submit']);
+    }
+
+    public function testAdditionalFieldCanBeAdjustedByFormAnnotation()
+    {
+        $this->checkForm(new Model\WithAdditionalFields(), ['submit', 'field'], function ($phpunit, $form) {
+            $phpunit->assertSame('Changed', $form->get('submit')->getConfig()->getOption('label'));
+        }, "changeLabelAndOrder");
+    }
+
+    public function testAdditionalFieldsAreInherited()
+    {
+        $this->checkForm(new Model\WithAdditionalFieldsChildInheriting(), ['field', 'submit', 'reset']);
+    }
+
+    public function testAdditionalFieldsCanBePartiallyOverridden()
+    {
+        $this->checkForm(
+            new Model\WithAdditionalFieldsChildOverriding(),
+            ['field', 'submit'],
+            function ($phpunit, $form) {
+                $phpunit->assertSame('Crash Override', $form->get('submit')->getConfig()->getOption('label'));
+            }
+        );
     }
 }
