@@ -16,32 +16,32 @@ class Person
     public $id;
     
     /**
-     * @Form\Display(type="choice", choices = { "mr" = "Mr.", "ms" = "Ms." })
+     * @Form\Field(type="choice", choices = { "mr" = "Mr.", "ms" = "Ms." })
      */
     public $title;
     
     /**
-     * @Form\Display(type="text")
+     * @Form\Field(type="text")
      */
     public $name;
     
     /**
-     * @Form\Display(type="text")
+     * @Form\Field(type="text")
      */
     public $surname;
     
     /**
-     * @Form\Display(type="file")
+     * @Form\Field(type="file")
      */
     public $photo;
     
     /**
-     * @Form\Display(type="checkbox")
+     * @Form\Field(type="checkbox")
      */
     public $active;
     
     /**
-     * @Form\Display(type="money")
+     * @Form\Field(type="money")
      */
     public $salary;
 

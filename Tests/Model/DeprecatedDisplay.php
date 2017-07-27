@@ -4,12 +4,12 @@ namespace Codete\FormGeneratorBundle\Tests\Model;
 
 use Codete\FormGeneratorBundle\Annotations as Form;
 
-class Simple
+class DeprecatedDisplay
 {
     public $id;
-    
+
     /**
-     * @Form\Field(type="text")
+     * @Form\Display(type="text")
      */
     public $title;
 }

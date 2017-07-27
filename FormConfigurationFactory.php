@@ -3,6 +3,7 @@
 namespace Codete\FormGeneratorBundle;
 
 use Codete\FormGeneratorBundle\Annotations\Display;
+use Codete\FormGeneratorBundle\Annotations\Field;
 use Codete\FormGeneratorBundle\Annotations\Form;
 use Codete\FormGeneratorBundle\Form\Type\EmbedType;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -91,6 +92,9 @@ class FormConfigurationFactory
             $fieldConfiguration = $this->annotationReader->getPropertyAnnotation($property, Display::class);
             if ($fieldConfiguration === null && !$propertyIsListed) {
                 continue;
+            }
+            if ($fieldConfiguration instanceof Display && ! $fieldConfiguration instanceof Field) {
+                @trigger_error("Display annotation has been deprecated in 1.3 and will be removed in 2.0 - please use Field instead.", E_USER_DEPRECATED);
             }
             $configuration[$property->getName()] = (array)$fieldConfiguration;
             if (isset($fields[$property->getName()])) {

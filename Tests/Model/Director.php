@@ -12,7 +12,7 @@ use Codete\FormGeneratorBundle\Annotations as Form;
 class Director extends Person
 {
     /**
-     * @Form\Display(type="text")
+     * @Form\Field(type="text")
      */
     public $department;
 }

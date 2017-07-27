@@ -6,6 +6,8 @@ namespace Codete\FormGeneratorBundle\Annotations;
  * @Annotation
  * 
  * @author Maciej Malarz <malarzm@gmail.com>
+ *
+ * @deprecated use Field instead
  */
 class Display extends \Doctrine\Common\Annotations\Annotation
 {

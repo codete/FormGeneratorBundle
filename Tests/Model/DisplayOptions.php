@@ -7,17 +7,17 @@ use Codete\FormGeneratorBundle\Annotations as Form;
 class DisplayOptions
 {
     /**
-     * @Form\Display(type="text", attr = { "class" = "foo" })
+     * @Form\Field(type="text", attr = { "class" = "foo" })
      */
     public $normal;
 
     /**
-     * @Form\Display(type="text", options = { "attr" = { "class" = "foo" } })
+     * @Form\Field(type="text", options = { "attr" = { "class" = "foo" } })
      */
     public $options;
 
     /**
-     * @Form\Display(type="text", options = { "attr" = { "class" = "foo" } }, attr = { "class" = "bar" })
+     * @Form\Field(type="text", options = { "attr" = { "class" = "foo" } }, attr = { "class" = "bar" })
      */
     public $optionsIgnoreInlinedFields;
 }

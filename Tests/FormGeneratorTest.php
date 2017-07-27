@@ -39,6 +39,7 @@ class FormGeneratorTest extends BaseTest
     public function provideDefaultForm()
     {
         return [
+            [new Model\DeprecatedDisplay(), ['title']],
             [new Model\Simple(), ['title']],
             [new Model\SimpleNotOverridingDefaultView(), ['author', 'title']],
             [new Model\SimpleOverridingDefaultView(), ['title', 'author'], function($phpunit, $form) {

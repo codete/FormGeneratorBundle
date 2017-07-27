@@ -15,6 +15,9 @@ forms' configuration although YAML/XML support is planned.
 Basic Usages
 ------------
 
+**`@Form\Display` annotation was deprecated in 1.3 and will be removed
+in 2.0. Please use `@Form\Field` instead.**
+
 Consider a class
 
 ``` php
@@ -30,32 +33,32 @@ class Person
     public $id;
     
     /**
-     * @Form\Display(type="choice", choices = { "mr" = "Mr.", "ms" = "Ms." })
+     * @Form\Field(type="choice", choices = { "mr" = "Mr.", "ms" = "Ms." })
      */
     public $title;
     
     /**
-     * @Form\Display(type="text")
+     * @Form\Field(type="text")
      */
     public $name;
     
     /**
-     * @Form\Display(type="text")
+     * @Form\Field(type="text")
      */
     public $surname;
     
     /**
-     * @Form\Display(type="file")
+     * @Form\Field(type="file")
      */
     public $photo;
     
     /**
-     * @Form\Display(type="checkbox")
+     * @Form\Field(type="checkbox")
      */
     public $active;
     
     /**
-     * @Form\Display(type="money")
+     * @Form\Field(type="money")
      */
     public $salary;
 }
@@ -87,12 +90,12 @@ namespace when specifying type**
 Specifying Field Options
 ------------------------
 
-By default everything you specify in `@Form\Display` (except for `type`) annotation
+By default everything you specify in `@Form\Field` (except for `type`) annotation
 will be passed as an option to generated form type. To illustrate:
 
 ```php
 /**
- * @Form\Display(type="choice", choices = { "mr" = "Mr.", "ms" = "Ms." }, "attr" = { "class" = "foo" })
+ * @Form\Field(type="choice", choices = { "mr" = "Mr.", "ms" = "Ms." }, "attr" = { "class" = "foo" })
  */
 public $title;
 ```
@@ -118,7 +121,7 @@ all Symfony fields' options into an `options` property:
 
 ```php
 /**
- * @Form\Display(
+ * @Form\Field(
  *   type="choice",
  *   options={ "choices" = { "mr" = "Mr.", "ms" = "Ms." }, "attr" = { "class" = "foo" } }
  * )
