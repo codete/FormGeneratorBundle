@@ -134,6 +134,28 @@ them as that field's options to the `FormBuilder`. Effectively this allows you t
 separate field's options from options for your configuration modifiers which can be
 a gain on its own.
 
+Adding fields not mapped to a property
+--------------------------------------
+
+**This feature was added in 1.3.0.**
+
+Sometimes you may need to add a field that will not be mapped to a property. An example
+of such use case is adding buttons to the form:
+
+```php
+/**
+ * The first value in Field annotation specifies field's name.
+ *
+ * @Form\Field("reset", type="reset")
+ * @Form\Field("submit", type="submit", "label"="Save")
+ */
+class Person
+```
+
+All fields added on the class level come last in the generated form, unless a form view 
+(described below) specifies otherwise. Contrary to other class-level settings, `@Field`s
+will not be inherited by child classes.
+
 Form Views
 ----------
 
