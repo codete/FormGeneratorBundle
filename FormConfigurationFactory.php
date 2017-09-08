@@ -81,8 +81,11 @@ class FormConfigurationFactory
             $properties = $ro->getProperties();
         } else {
             foreach (array_keys($fields) as $field) {
+                // setting the configuration to null guarantees the order of elements in there
+                // to match the order specified in $fields
+                $configuration[$field] = null;
                 if (! $ro->hasProperty($field)) {
-                    continue; // most prob a class-level field
+                    continue; // most prob a class-level field, order will be maintained due to trick above
                 }
                 $properties[] = $ro->getProperty($field);
             }

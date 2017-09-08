@@ -209,7 +209,7 @@ class FormGeneratorTest extends BaseTest
 
     public function testFormViewCanAffectClassLevelFields()
     {
-        $this->checkForm(new Model\ClassLevelFields(), ['title', 'submit'], function($phpunit, $form) {
+        $this->checkForm(new Model\ClassLevelFields(), ['submit', 'title'], function($phpunit, $form) {
             $normal = $form->get('submit')->getConfig()->getOptions();
             $phpunit->assertEquals('Click me', $normal['label']);
         }, 'tweaked');
