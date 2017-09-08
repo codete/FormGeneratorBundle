@@ -57,7 +57,8 @@ class FormGeneratorTest extends BaseTest
                 $phpunit->assertEquals('foo', $options['attr']['class']);
                 $optionsIgnoreInlinedFields = $form->get('optionsIgnoreInlinedFields')->getConfig()->getOptions();
                 $phpunit->assertEquals('foo', $optionsIgnoreInlinedFields['attr']['class']);
-            }]
+            }],
+            [new Model\ClassLevelFields(), ['title', 'reset', 'submit']],
         ];
     }
     
@@ -196,7 +197,7 @@ class FormGeneratorTest extends BaseTest
         $this->checkForm(new Model\Director(), ['title', 'name', 'surname', 'photo', 'active'], null, 'personal');
     }
     
-    public function testFormAnnotationViewCanBeOverriden()
+    public function testFormAnnotationViewCanBeOverridden()
     {
         $this->checkForm(new Model\Director(), ['salary', 'department'], null, 'work');
     }
@@ -204,6 +205,14 @@ class FormGeneratorTest extends BaseTest
     public function testAllParentsAreCheckedForDefaultFormView()
     {
         $this->checkForm(new Model\InheritanceTest(), ['title', 'author']);
+    }
+
+    public function testFormViewCanAffectClassLevelFields()
+    {
+        $this->checkForm(new Model\ClassLevelFields(), ['title', 'submit'], function($phpunit, $form) {
+            $normal = $form->get('submit')->getConfig()->getOptions();
+            $phpunit->assertEquals('Click me', $normal['label']);
+        }, 'tweaked');
     }
     
     protected function checkForm($model, $expectedFields, callable $additionalCheck = null, $form = 'default', $context = [])
