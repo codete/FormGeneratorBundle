@@ -6,13 +6,15 @@ use Codete\FormGeneratorBundle\Annotations as Form;
 
 /**
  * @Form\Form(
- *  work = { "salary", "department" },
+ *   tweaked = { "submit" = { "label" = "Click me" }, "title" }
  * )
+ * @Form\Field("reset", type="reset")
+ * @Form\Field("submit", type="submit")
  */
-class Director extends Person
+class ClassLevelFields
 {
     /**
      * @Form\Field(type="text")
      */
-    public $department;
+    public $title;
 }

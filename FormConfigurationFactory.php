@@ -3,6 +3,7 @@
 namespace Codete\FormGeneratorBundle;
 
 use Codete\FormGeneratorBundle\Annotations\Display;
+use Codete\FormGeneratorBundle\Annotations\Field;
 use Codete\FormGeneratorBundle\Annotations\Form;
 use Codete\FormGeneratorBundle\Form\Type\EmbedType;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -80,31 +81,60 @@ class FormConfigurationFactory
             $properties = $ro->getProperties();
         } else {
             foreach (array_keys($fields) as $field) {
+                // setting the configuration to null guarantees the order of elements in there
+                // to match the order specified in $fields
+                $configuration[$field] = null;
+                if (! $ro->hasProperty($field)) {
+                    continue; // most prob a class-level field, order will be maintained due to trick above
+                }
                 $properties[] = $ro->getProperty($field);
             }
         }
+        $fieldConfigurations = [];
+        // first are coming properties
         foreach ($properties as $property) {
-            $propertyIsListed = array_key_exists($property->getName(), $fields);
+            $propertyName = $property->getName();
+            $propertyIsListed = array_key_exists($propertyName, $fields);
             if (!empty($fields) && !$propertyIsListed) {
-                continue;
+                continue; // list of fields was specified and current one is not there
             }
             $fieldConfiguration = $this->annotationReader->getPropertyAnnotation($property, Display::class);
             if ($fieldConfiguration === null && !$propertyIsListed) {
                 continue;
             }
-            $configuration[$property->getName()] = (array)$fieldConfiguration;
-            if (isset($fields[$property->getName()])) {
-                $configuration[$property->getName()] = array_replace_recursive($configuration[$property->getName()], $fields[$property->getName()]);
+            $fieldConfigurations[$propertyName] = $fieldConfiguration;
+        }
+        // later are coming class-level fields. We need to iterate through all annotations as there's no method
+        // to get *all* occurrences of chosen annotation.
+        foreach ($this->annotationReader->getClassAnnotations($ro) as $annotation) {
+            if (! $annotation instanceof Display) {
+                continue;
             }
-            if ($configuration[$property->getName()]['type'] === EmbedType::TYPE) {
-                if (($value = $property->getValue($model)) === null) {
-                    $value = $this->instantiator->instantiate($configuration[$property->getName()]['class']);
+            $propertyName = $annotation->value;
+            if (!empty($fields) && !array_key_exists($propertyName, $fields)) {
+                continue; // list of fields was specified and current one is not there
+            }
+            // @todo this was a mistake originally, need to drop default required at all in 2.0
+            unset($annotation->required);
+            $fieldConfigurations[$propertyName] = $annotation;
+        }
+        foreach ($fieldConfigurations as $propertyName => $fieldConfiguration) {
+            if ($fieldConfiguration instanceof Display && ! $fieldConfiguration instanceof Field) {
+                @trigger_error("Display annotation has been deprecated in 1.3 and will be removed in 2.0 - please use Field instead.", E_USER_DEPRECATED);
+            }
+            $configuration[$propertyName] = (array)$fieldConfiguration;
+            if (isset($fields[$propertyName])) {
+                $configuration[$propertyName] = array_replace_recursive($configuration[$propertyName], $fields[$propertyName]);
+            }
+            if ($configuration[$propertyName]['type'] === EmbedType::TYPE) {
+                if (! $ro->hasProperty($propertyName) || ($value = $ro->getProperty($propertyName)->getValue($model)) === null) {
+                    $value = $this->instantiator->instantiate($configuration[$propertyName]['class']);
                 }
-                $configuration[$property->getName()]['data_class'] = $configuration[$property->getName()]['class'];
-                $configuration[$property->getName()]['model'] = $value;
+                $configuration[$propertyName]['data_class'] = $configuration[$propertyName]['class'];
+                $configuration[$propertyName]['model'] = $value;
             }
             // this variable comes from Doctrine\Common\Annotations\Annotation
-            unset($configuration[$property->getName()]['value']);
+            unset($configuration[$propertyName]['value']);
         }
         return $configuration;
     }

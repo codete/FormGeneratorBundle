@@ -14,7 +14,7 @@ class MiddleClass extends SimpleOverridingDefaultView {  }
 class InheritanceTest extends MiddleClass
 {
     /**
-     * @Form\Display(type="text")
+     * @Form\Field(type="text")
      */
     public $another;
 }

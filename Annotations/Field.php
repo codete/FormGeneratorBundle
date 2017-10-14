@@ -4,10 +4,10 @@ namespace Codete\FormGeneratorBundle\Annotations;
 
 /**
  * @Annotation
+ *
+ * @author Maciej Malarz <malarzm@gmail.com>
  */
-class Embed extends Field
+class Field extends Display
 {
-    public $view = 'default';
 
-    public $type = 'embed';
 }

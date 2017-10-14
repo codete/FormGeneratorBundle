@@ -7,7 +7,7 @@ use Codete\FormGeneratorBundle\Annotations as Form;
 class SimpleNotOverridingDefaultView extends Simple
 {
     /**
-     * @Form\Display(type="text")
+     * @Form\Field(type="text")
      */
     public $author;
 }
