@@ -1,7 +1,7 @@
 {
     "name": "codete/form-generator-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony2 Bundle for dynamic Form generation",
+    "description": "Symfony Bundle for dynamic Form generation",
     "keywords": ["form generator", "dynamic form"],
     "homepage": "http://codete.com",
     "license": "MIT",
