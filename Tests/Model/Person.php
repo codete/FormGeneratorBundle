@@ -16,7 +16,7 @@ class Person
     public $id;
     
     /**
-     * @Form\Field(type="choice", choices = { "mr" = "Mr.", "ms" = "Ms." })
+     * @Form\Field(type="choice", choices = { "Mr." = "mr", "Ms." = "ms" })
      */
     public $title;
     

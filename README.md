@@ -33,7 +33,7 @@ class Person
     public $id;
     
     /**
-     * @Form\Field(type="choice", choices = { "mr" = "Mr.", "ms" = "Ms." })
+     * @Form\Field(type="choice", choices = { "Mr." = "mr", "Ms." = "ms" })
      */
     public $title;
     
@@ -95,7 +95,7 @@ will be passed as an option to generated form type. To illustrate:
 
 ```php
 /**
- * @Form\Field(type="choice", choices = { "mr" = "Mr.", "ms" = "Ms." }, "attr" = { "class" = "foo" })
+ * @Form\Field(type="choice", choices = { "Mr." = "mr", "Ms." = "ms" }, "attr" = { "class" = "foo" })
  */
 public $title;
 ```
@@ -104,7 +104,7 @@ is equivalent to:
 
 ```php
 $fb->add('title', ChoiceType::class, [
-    'choices' => [ 'mr' => 'Mr.', 'ms' => 'Ms.' ],
+    'choices' => [ 'Mr.' => 'mr', 'Ms.' => 'ms' ],
     'attr' => [ 'class' => 'foo' ],
 ]);
 ```
@@ -123,7 +123,7 @@ all Symfony fields' options into an `options` property:
 /**
  * @Form\Field(
  *   type="choice",
- *   options={ "choices" = { "mr" = "Mr.", "ms" = "Ms." }, "attr" = { "class" = "foo" } }
+ *   options={ "choices" = { "Mr." = "mr", "Ms." = "ms" }, "attr" = { "class" = "foo" } }
  * )
  */
 public $title;
