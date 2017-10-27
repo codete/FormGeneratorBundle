@@ -92,7 +92,7 @@ class FormGeneratorTest extends BaseTest
     }
     
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Unknown form 'foo'
      */
     public function testUnknownFormViewThrowsException()
