@@ -9,8 +9,10 @@ our FormType classes so we wanted to automate the process and limit
 required changes only to Entity/Document/Whatever class and get new
 form out of the box - this is how FormGenerator was invented.
 
-We use annotations on daily basis so it was natural choice for 
-forms' configuration although YAML/XML support is planned.
+**You're looking at the documentation for (not released yet) version 2.0**
+
+- [go to 1.x documentation](https://github.com/codete/FormGeneratorBundle/blob/1.3.0/README.md)
+- [see UPGRADE.md for help with upgrading](https://github.com/codete/FormGeneratorBundle/blob/master/UPGRADE-2.0.md)
 
 Basic Usages
 ------------
@@ -109,13 +111,11 @@ $fb->add('title', ChoiceType::class, [
 ]);
 ```
 
-**Specifying field options through `options`, described below, was added in 1.3.0.**
-
 This approach has few advantages like saving you a bunch of keystrokes each time you
 are specifying options, but there are downsides too. First, if you have any custom
 option for one of your modifiers you forget to `unset`, Symfony will be unhappy and
 will let you know by throwing an exception. Another downside is that we have reserved
-`type` property and it's needed as an option for a repeated type. If you ever find
+`type` property and it's needed as an option for the repeated type. If you ever find
 yourself in one of described cases, or you just prefer to be explicit, you can put
 all Symfony fields' options into an `options` property:
 
@@ -136,8 +136,6 @@ a gain on its own.
 
 Adding fields not mapped to a property
 --------------------------------------
-
-**This feature was added in 1.3.0.**
 
 Sometimes you may need to add a field that will not be mapped to a property. An example
 of such use case is adding buttons to the form:
@@ -187,7 +185,7 @@ which defines order of execution (default is `0`, if two or more
 services have same priority then first added is executed first).
 
 **If you have enabled [Service autoconfiguration](http://symfony.com/blog/new-in-symfony-3-3-service-autoconfiguration)
-the bundle (since version 1.2.0) will automatically tag services for you.**
+the bundle will automatically tag services for you.**
 
 FormViewProvider
 ----------------
