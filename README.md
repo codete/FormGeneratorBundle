@@ -21,11 +21,14 @@ in 2.0. Please use `@Form\Field` instead.**
 Consider a class
 
 ``` php
+use Codete\FormGeneratorBundle\Annotations as Form;
+// import Symfony form types so ::class will work
+
 /**
  * @Form\Form(
  *  personal = { "title", "name", "surname", "photo", "active" },
  *  work = { "salary" },
- *  admin = { "id" = { "type" = "number" }, "surname" }
+ *  admin = { "id" = { "type" = "NumberType::class" }, "surname" }
  * )
  */
 class Person
@@ -33,32 +36,32 @@ class Person
     public $id;
     
     /**
-     * @Form\Field(type="choice", choices = { "Mr." = "mr", "Ms." = "ms" })
+     * @Form\Field(type=ChoiceType::class, choices = { "Mr." = "mr", "Ms." = "ms" })
      */
     public $title;
     
     /**
-     * @Form\Field(type="text")
+     * @Form\Field(type=TextType::class)
      */
     public $name;
     
     /**
-     * @Form\Field(type="text")
+     * @Form\Field(type=TextType::class)
      */
     public $surname;
     
     /**
-     * @Form\Field(type="file")
+     * @Form\Field(type=FileType::class)
      */
     public $photo;
     
     /**
-     * @Form\Field(type="checkbox")
+     * @Form\Field(type=CheckboxType::class)
      */
     public $active;
     
     /**
-     * @Form\Field(type="money")
+     * @Form\Field(type=MoneyType::class)
      */
     public $salary;
 }
@@ -82,10 +85,7 @@ $form->handleRequest($request);
 
 Voila! Form for editing all annotated properties is generated for us.
 We could even omit ``type=".."`` in annotations if Symfony will be
-able to guess field type for us.
-
-**Since Symfony 3.0, if you use a custom form type, you must specify the complete
-namespace when specifying type**
+able to guess the field's type for us.
 
 Specifying Field Options
 ------------------------
@@ -95,7 +95,7 @@ will be passed as an option to generated form type. To illustrate:
 
 ```php
 /**
- * @Form\Field(type="choice", choices = { "Mr." = "mr", "Ms." = "ms" }, "attr" = { "class" = "foo" })
+ * @Form\Field(type=ChoiceType::class, choices = { "Mr." = "mr", "Ms." = "ms" }, "attr" = { "class" = "foo" })
  */
 public $title;
 ```
@@ -122,7 +122,7 @@ all Symfony fields' options into an `options` property:
 ```php
 /**
  * @Form\Field(
- *   type="choice",
+ *   type=ChoiceType::class,
  *   options={ "choices" = { "Mr." = "mr", "Ms." = "ms" }, "attr" = { "class" = "foo" } }
  * )
  */
@@ -146,8 +146,8 @@ of such use case is adding buttons to the form:
 /**
  * The first value in Field annotation specifies field's name.
  *
- * @Form\Field("reset", type="reset")
- * @Form\Field("submit", type="submit", "label"="Save")
+ * @Form\Field("reset", type=ResetType::class)
+ * @Form\Field("submit", type=SubmitType::class, "label"="Save")
  */
 class Person
 ```

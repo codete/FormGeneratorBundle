@@ -2,6 +2,7 @@
 
 namespace Codete\FormGeneratorBundle;
 
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -75,7 +76,7 @@ class FormGenerator
      */
     public function createFormBuilder($model, $form = 'default', $context = [], $options=[])
     {
-        $fb = $this->formFactory->createBuilder(FieldTypeMapper::map('form'), $model, $options);
+        $fb = $this->formFactory->createBuilder(FormType::class, $model, $options);
 
         $this->populateFormBuilder($fb, $model, $form, $context);
         return $fb;
@@ -93,7 +94,7 @@ class FormGenerator
      */
     public function createNamedFormBuilder($name, $model, $form = 'default', $context = [], $options=[])
     {
-        $fb = $this->formFactory->createNamedBuilder($name, FieldTypeMapper::map('form'), $model, $options);
+        $fb = $this->formFactory->createNamedBuilder($name, FormType::class, $model, $options);
 
         $this->populateFormBuilder($fb, $model, $form, $context);
         return $fb;
@@ -118,7 +119,7 @@ class FormGenerator
         foreach ($configuration as $field => $options) {
             $type = null;
             if (isset($options['type'])) {
-                $type = FieldTypeMapper::map($options['type']);
+                $type = $options['type'];
                 unset($options['type']);
             }
             foreach ($this->adjusterRegistry->getFormFieldResolvers() as $resolver) {

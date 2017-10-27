@@ -7,11 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-
 class EmbedType extends AbstractType
 {
-    const TYPE = 'embed';
-
     /**
      * @var FormGenerator $formGenerator
      */
@@ -52,16 +49,6 @@ class EmbedType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return self::TYPE;
-    }
-
-    /**
-     * This should stay until we drop Symfony 2.7 support
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return self::TYPE;
+        return 'embed';
     }
 }

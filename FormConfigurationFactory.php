@@ -126,7 +126,7 @@ class FormConfigurationFactory
             if (isset($fields[$propertyName])) {
                 $configuration[$propertyName] = array_replace_recursive($configuration[$propertyName], $fields[$propertyName]);
             }
-            if ($configuration[$propertyName]['type'] === EmbedType::TYPE) {
+            if ($configuration[$propertyName]['type'] === EmbedType::class) {
                 if (! $ro->hasProperty($propertyName) || ($value = $ro->getProperty($propertyName)->getValue($model)) === null) {
                     $value = $this->instantiator->instantiate($configuration[$propertyName]['class']);
                 }

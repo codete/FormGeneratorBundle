@@ -10,7 +10,7 @@
     ],
     "require": {
         "php": "^7.1",
-        "doctrine/annotations": "~1.0",
+        "doctrine/annotations": "~1.2",
         "symfony/form": "~3.4|~4.0",
         "symfony/framework-bundle": "~3.4|~4.0",
         "doctrine/instantiator": "^1.0"
