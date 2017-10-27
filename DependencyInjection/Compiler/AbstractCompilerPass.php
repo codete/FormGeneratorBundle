@@ -2,6 +2,7 @@
 
 namespace Codete\FormGeneratorBundle\DependencyInjection\Compiler;
 
+use Codete\FormGeneratorBundle\FormGenerator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -30,10 +31,10 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (! $container->hasDefinition('form_generator')) {
+        if (! $container->hasDefinition(FormGenerator::class)) {
             return;
         }
-        $formGenerator = $container->getDefinition('form_generator');
+        $formGenerator = $container->getDefinition(FormGenerator::class);
         foreach ($container->findTaggedServiceIds($this->getTagName()) as $id => $tags) {
             foreach ($tags as $attributes) {
                 if (! isset($attributes['priority'])) {

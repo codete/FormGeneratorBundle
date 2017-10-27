@@ -41,6 +41,19 @@ Although this change does not come from the bundle itself, it's a notable one. P
 that Symfony changed the `choices` array format from `value => label` to `label => value`.
 Also Symfony 4.0 removed the `choices_as_values` flag.
 
+## "form_generator" service is no longer available
+
+You can now obtain it using `Codete\FormGeneratorBundle\FormGenerator::class` name,
+or in a following way in a container aware environment like a controller:
+
+``` php
+use Codete\FormGeneratorBundle\FormGenerator;
+
+$generator = $this->get(FormGenerator::class);
+```
+
+For the record `form_generator.type.embed` is also no longer available.
+
 ## Other changes
 
 - The `Codete\FormGeneratorBundle\Form\Type\EmbedType::TYPE` constant has been removed

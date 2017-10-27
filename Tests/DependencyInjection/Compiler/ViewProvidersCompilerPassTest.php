@@ -3,6 +3,7 @@
 namespace Codete\FormGeneratorBundle\Tests\DependencyInjection\Compiler;
 
 use Codete\FormGeneratorBundle\DependencyInjection\Compiler\ViewProvidersCompilerPass;
+use Codete\FormGeneratorBundle\FormGenerator;
 use Codete\FormGeneratorBundle\Tests\BaseTest;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -18,7 +19,7 @@ class ViewProvidersCompilerPassTest extends BaseTest
         $importantProvider->addTag('form_generator.view_provider', ['priority' => 255]);
 
         $container = new ContainerBuilder;
-        $container->setDefinition('form_generator', $fg);
+        $container->setDefinition(FormGenerator::class, $fg);
         $container->setDefinition('some.form_provider', $provider);
         $container->setDefinition('important.form_provider', $importantProvider);
 

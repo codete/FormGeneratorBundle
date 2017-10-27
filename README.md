@@ -75,10 +75,7 @@ FormBuilder there we can use instead:
 ``` php
 use Codete\FormGeneratorBundle\FormGenerator;
 
-// Symfony 3.3+ way
 $generator = $this->get(FormGenerator::class);
-// "old way"
-$generator = $this->get('form_generator');
 
 $person = new Person();
 $form = $generator->createFormBuilder($person)->getForm();
