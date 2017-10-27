@@ -2,12 +2,12 @@
 
 namespace Codete\FormGeneratorBundle\Tests;
 
-use Codete\FormGeneratorBundle\FieldTypeMapper;
 use Codete\FormGeneratorBundle\Form\Type\EmbedType;
 use Codete\FormGeneratorBundle\Tests\FormConfigurationModifier\InactivePersonModifier;
 use Codete\FormGeneratorBundle\Tests\FormConfigurationModifier\NoPhotoPersonModifier;
 use Codete\FormGeneratorBundle\Tests\Model\Person;
 use Codete\FormGeneratorBundle\Tests\Model\SimpleParent;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\PreloadedExtension;
 
 class FormGeneratorTest extends BaseTest
@@ -92,7 +92,7 @@ class FormGeneratorTest extends BaseTest
     }
     
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Unknown form 'foo'
      */
     public function testUnknownFormViewThrowsException()
@@ -243,7 +243,7 @@ class FormGeneratorTest extends BaseTest
         $fb = $this->formFactoryBuilder
             ->addExtension($this->embedTypeExtension)
             ->getFormFactory()
-            ->createBuilder(FieldTypeMapper::map('form'), $sp);
+            ->createBuilder(FormType::class, $sp);
 
         $this->formGenerator->addFormConfigurationModifier(new NoPhotoPersonModifier());
         $this->formGenerator->addFormConfigurationModifier(new InactivePersonModifier());

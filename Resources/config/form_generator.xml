@@ -5,18 +5,14 @@
     
     <services>
         
-        <service id="form_generator" class="Codete\FormGeneratorBundle\FormGenerator">
+        <service id="Codete\FormGeneratorBundle\FormGenerator" class="Codete\FormGeneratorBundle\FormGenerator">
             <argument type="service" id="form.factory"/>
         </service>
 
-        <service id="form_generator.type.embed" class="Codete\FormGeneratorBundle\Form\Type\EmbedType">
+        <service id="Codete\FormGeneratorBundle\Form\Type\EmbedType" class="Codete\FormGeneratorBundle\Form\Type\EmbedType">
             <tag name="form.type" alias="embed" />
-            <argument type="service" id="form_generator" />
+            <argument type="service" id="Codete\FormGeneratorBundle\FormGenerator" />
         </service>
-
-        <service alias="form_generator" id="Codete\FormGeneratorBundle\FormGenerator" />
-
-        <service alias="form_generator.type.embed" id="Codete\FormGeneratorBundle\Form\Type\EmbedType" />
         
     </services>
     

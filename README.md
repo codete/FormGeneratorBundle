@@ -9,8 +9,10 @@ our FormType classes so we wanted to automate the process and limit
 required changes only to Entity/Document/Whatever class and get new
 form out of the box - this is how FormGenerator was invented.
 
-We use annotations on daily basis so it was natural choice for 
-forms' configuration although YAML/XML support is planned.
+**You're looking at the documentation for (not released yet) version 2.0**
+
+- [go to 1.x documentation](https://github.com/codete/FormGeneratorBundle/blob/1.3.0/README.md)
+- [see UPGRADE.md for help with upgrading](https://github.com/codete/FormGeneratorBundle/blob/master/UPGRADE-2.0.md)
 
 Basic Usages
 ------------
@@ -21,11 +23,14 @@ in 2.0. Please use `@Form\Field` instead.**
 Consider a class
 
 ``` php
+use Codete\FormGeneratorBundle\Annotations as Form;
+// import Symfony form types so ::class will work
+
 /**
  * @Form\Form(
  *  personal = { "title", "name", "surname", "photo", "active" },
  *  work = { "salary" },
- *  admin = { "id" = { "type" = "number" }, "surname" }
+ *  admin = { "id" = { "type" = "NumberType::class" }, "surname" }
  * )
  */
 class Person
@@ -33,32 +38,32 @@ class Person
     public $id;
     
     /**
-     * @Form\Field(type="choice", choices = { "mr" = "Mr.", "ms" = "Ms." })
+     * @Form\Field(type=ChoiceType::class, choices = { "Mr." = "mr", "Ms." = "ms" })
      */
     public $title;
     
     /**
-     * @Form\Field(type="text")
+     * @Form\Field(type=TextType::class)
      */
     public $name;
     
     /**
-     * @Form\Field(type="text")
+     * @Form\Field(type=TextType::class)
      */
     public $surname;
     
     /**
-     * @Form\Field(type="file")
+     * @Form\Field(type=FileType::class)
      */
     public $photo;
     
     /**
-     * @Form\Field(type="checkbox")
+     * @Form\Field(type=CheckboxType::class)
      */
     public $active;
     
     /**
-     * @Form\Field(type="money")
+     * @Form\Field(type=MoneyType::class)
      */
     public $salary;
 }
@@ -70,10 +75,7 @@ FormBuilder there we can use instead:
 ``` php
 use Codete\FormGeneratorBundle\FormGenerator;
 
-// Symfony 3.3+ way
 $generator = $this->get(FormGenerator::class);
-// "old way"
-$generator = $this->get('form_generator');
 
 $person = new Person();
 $form = $generator->createFormBuilder($person)->getForm();
@@ -82,10 +84,7 @@ $form->handleRequest($request);
 
 Voila! Form for editing all annotated properties is generated for us.
 We could even omit ``type=".."`` in annotations if Symfony will be
-able to guess field type for us.
-
-**Since Symfony 3.0, if you use a custom form type, you must specify the complete
-namespace when specifying type**
+able to guess the field's type for us.
 
 Specifying Field Options
 ------------------------
@@ -95,7 +94,7 @@ will be passed as an option to generated form type. To illustrate:
 
 ```php
 /**
- * @Form\Field(type="choice", choices = { "mr" = "Mr.", "ms" = "Ms." }, "attr" = { "class" = "foo" })
+ * @Form\Field(type=ChoiceType::class, choices = { "Mr." = "mr", "Ms." = "ms" }, "attr" = { "class" = "foo" })
  */
 public $title;
 ```
@@ -104,26 +103,24 @@ is equivalent to:
 
 ```php
 $fb->add('title', ChoiceType::class, [
-    'choices' => [ 'mr' => 'Mr.', 'ms' => 'Ms.' ],
+    'choices' => [ 'Mr.' => 'mr', 'Ms.' => 'ms' ],
     'attr' => [ 'class' => 'foo' ],
 ]);
 ```
-
-**Specifying field options through `options`, described below, was added in 1.3.0.**
 
 This approach has few advantages like saving you a bunch of keystrokes each time you
 are specifying options, but there are downsides too. First, if you have any custom
 option for one of your modifiers you forget to `unset`, Symfony will be unhappy and
 will let you know by throwing an exception. Another downside is that we have reserved
-`type` property and it's needed as an option for a repeated type. If you ever find
+`type` property and it's needed as an option for the repeated type. If you ever find
 yourself in one of described cases, or you just prefer to be explicit, you can put
 all Symfony fields' options into an `options` property:
 
 ```php
 /**
  * @Form\Field(
- *   type="choice",
- *   options={ "choices" = { "mr" = "Mr.", "ms" = "Ms." }, "attr" = { "class" = "foo" } }
+ *   type=ChoiceType::class,
+ *   options={ "choices" = { "Mr." = "mr", "Ms." = "ms" }, "attr" = { "class" = "foo" } }
  * )
  */
 public $title;
@@ -137,8 +134,6 @@ a gain on its own.
 Adding fields not mapped to a property
 --------------------------------------
 
-**This feature was added in 1.3.0.**
-
 Sometimes you may need to add a field that will not be mapped to a property. An example
 of such use case is adding buttons to the form:
 
@@ -146,8 +141,8 @@ of such use case is adding buttons to the form:
 /**
  * The first value in Field annotation specifies field's name.
  *
- * @Form\Field("reset", type="reset")
- * @Form\Field("submit", type="submit", "label"="Save")
+ * @Form\Field("reset", type=ResetType::class)
+ * @Form\Field("submit", type=SubmitType::class, "label"="Save")
  */
 class Person
 ```
@@ -187,7 +182,7 @@ which defines order of execution (default is `0`, if two or more
 services have same priority then first added is executed first).
 
 **If you have enabled [Service autoconfiguration](http://symfony.com/blog/new-in-symfony-3-3-service-autoconfiguration)
-the bundle (since version 1.2.0) will automatically tag services for you.**
+the bundle will automatically tag services for you.**
 
 FormViewProvider
 ----------------

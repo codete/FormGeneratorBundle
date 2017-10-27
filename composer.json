@@ -1,7 +1,7 @@
 {
     "name": "codete/form-generator-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony2 Bundle for dynamic Form generation",
+    "description": "Symfony Bundle for dynamic Form generation",
     "keywords": ["form generator", "dynamic form"],
     "homepage": "http://codete.com",
     "license": "MIT",
@@ -10,13 +10,14 @@
     ],
     "require": {
         "php": "^7.1",
-        "doctrine/annotations": "~1.0",
-        "symfony/form": ">=2.7",
-        "symfony/framework-bundle": ">=2.7",
+        "doctrine/annotations": "~1.2",
+        "symfony/form": "~3.4|~4.0",
+        "symfony/framework-bundle": "~3.4|~4.0",
         "doctrine/instantiator": "^1.0"
     },
+    "minimum-stability": "beta",
     "require-dev": {
-        "symfony/expression-language": ">=2.7",
+        "symfony/expression-language": "~3.4|~4.0",
         "phpunit/phpunit": "^6.4"
     },
     "autoload": {

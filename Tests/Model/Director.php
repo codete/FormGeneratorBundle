@@ -3,6 +3,7 @@
 namespace Codete\FormGeneratorBundle\Tests\Model;
 
 use Codete\FormGeneratorBundle\Annotations as Form;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * @Form\Form(
@@ -12,7 +13,7 @@ use Codete\FormGeneratorBundle\Annotations as Form;
 class Director extends Person
 {
     /**
-     * @Form\Field(type="text")
+     * @Form\Field(type=TextType::class)
      */
     public $department;
 }

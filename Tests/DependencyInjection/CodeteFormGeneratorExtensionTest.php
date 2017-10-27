@@ -22,21 +22,14 @@ class CodeteFormGeneratorExtensionTest extends BaseTest
         $extension = new CodeteFormGeneratorExtension();
         $extension->load([], $container);
 
-        $this->assertTrue($container->has('form_generator'));
-        $this->assertTrue($container->has('form_generator.type.embed'));
-        $embedType = $container->getDefinition('form_generator.type.embed');
-        $this->assertTrue($embedType->hasTag('form.type'));
-
         $this->assertTrue($container->has(FormGenerator::class));
         $this->assertTrue($container->has(EmbedType::class));
+        $embedType = $container->getDefinition(EmbedType::class);
+        $this->assertTrue($embedType->hasTag('form.type'));
     }
 
     public function testAutoconfigure()
     {
-        if (! method_exists(ContainerBuilder::class, 'registerForAutoconfiguration')) {
-            $this->markTestSkipped('This test requires Symfony 3.3 or above');
-        }
-
         $container = new ContainerBuilder();
         $extension = new CodeteFormGeneratorExtension();
         $extension->load([], $container);

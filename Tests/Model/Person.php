@@ -3,12 +3,18 @@
 namespace Codete\FormGeneratorBundle\Tests\Model;
 
 use Codete\FormGeneratorBundle\Annotations as Form;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * @Form\Form(
  *  personal = { "title", "name", "surname", "photo", "active" },
  *  work = { "salary" },
- *  admin = { "id" = { "type" = "number" }, "surname" }
+ *  admin = { "id" = { "type" = NumberType::class }, "surname" }
  * )
  */
 class Person
@@ -16,32 +22,32 @@ class Person
     public $id;
     
     /**
-     * @Form\Field(type="choice", choices = { "mr" = "Mr.", "ms" = "Ms." })
+     * @Form\Field(type=ChoiceType::class, choices = { "Mr." = "mr", "Ms." = "ms" })
      */
     public $title;
     
     /**
-     * @Form\Field(type="text")
+     * @Form\Field(type=TextType::class)
      */
     public $name;
     
     /**
-     * @Form\Field(type="text")
+     * @Form\Field(type=TextType::class)
      */
     public $surname;
     
     /**
-     * @Form\Field(type="file")
+     * @Form\Field(type=FileType::class)
      */
     public $photo;
     
     /**
-     * @Form\Field(type="checkbox")
+     * @Form\Field(type=CheckboxType::class)
      */
     public $active;
     
     /**
-     * @Form\Field(type="money")
+     * @Form\Field(type=MoneyType::class)
      */
     public $salary;
 
@@ -55,6 +61,4 @@ class Person
         $this->name = $name;
         $this->surname = $surname;
     }
-
-
 }

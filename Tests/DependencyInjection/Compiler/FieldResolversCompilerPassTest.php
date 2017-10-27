@@ -3,6 +3,7 @@
 namespace Codete\FormGeneratorBundle\Tests\DependencyInjection\Compiler;
 
 use Codete\FormGeneratorBundle\DependencyInjection\Compiler\FieldResolversCompilerPass;
+use Codete\FormGeneratorBundle\FormGenerator;
 use Codete\FormGeneratorBundle\Tests\BaseTest;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -18,7 +19,7 @@ class FieldResolversCompilerPassTest extends BaseTest
         $importantResolver->addTag('form_generator.field_resolver', ['priority' => 255]);
 
         $container = new ContainerBuilder;
-        $container->setDefinition('form_generator', $fg);
+        $container->setDefinition(FormGenerator::class, $fg);
         $container->setDefinition('some.field_resolver', $modifier);
         $container->setDefinition('important.field_resolver', $importantResolver);
 
