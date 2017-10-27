@@ -3,10 +3,11 @@
 namespace Codete\FormGeneratorBundle\Tests\DependencyInjection\Compiler;
 
 use Codete\FormGeneratorBundle\DependencyInjection\Compiler\ConfigurationModifiersCompilerPass;
+use Codete\FormGeneratorBundle\Tests\BaseTest;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class ConfigurationModifiersCompilerPassTest extends \PHPUnit_Framework_TestCase
+class ConfigurationModifiersCompilerPassTest extends BaseTest
 {
     public function testProcess()
     {

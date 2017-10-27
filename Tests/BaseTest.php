@@ -2,14 +2,17 @@
 
 namespace Codete\FormGeneratorBundle\Tests;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Codete\FormGeneratorBundle\FormGenerator;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryBuilderInterface;
 use Symfony\Component\Form\Forms;
 
-abstract class BaseTest extends \PHPUnit_Framework_TestCase
+abstract class BaseTest extends TestCase
 {
-    /** @var \Codete\FormGeneratorBundle\FormGenerator */
+    /**
+     * @var \Codete\FormGeneratorBundle\FormGenerator
+     */
     protected $formGenerator;
 
     /**

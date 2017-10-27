@@ -3,8 +3,9 @@
 namespace Codete\FormGeneratorBundle\Tests\Annotations;
 
 use Codete\FormGeneratorBundle\Annotations\Form;
+use Codete\FormGeneratorBundle\Tests\BaseTest;
 
-class FormTest extends \PHPUnit_Framework_TestCase
+class FormTest extends BaseTest
 {
     public function testDefaultAlwaysExists()
     {
@@ -20,7 +21,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Unknown form 'foo'
      */
     public function testUnknownFormThrowsException()
