@@ -11,9 +11,10 @@ use Codete\FormGeneratorBundle\FormConfigurationModifierInterface;
 use Codete\FormGeneratorBundle\FormFieldResolverInterface;
 use Codete\FormGeneratorBundle\FormGenerator;
 use Codete\FormGeneratorBundle\FormViewProviderInterface;
+use Codete\FormGeneratorBundle\Tests\BaseTest;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class CodeteFormGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
+class CodeteFormGeneratorExtensionTest extends BaseTest
 {
     public function testCoreServicesAreLoaded()
     {
