@@ -11,12 +11,13 @@
     "require": {
         "php": "^7.1",
         "doctrine/annotations": "~1.0",
-        "symfony/form": ">=2.7",
-        "symfony/framework-bundle": ">=2.7",
+        "symfony/form": "~3.4|~4.0",
+        "symfony/framework-bundle": "~3.4|~4.0",
         "doctrine/instantiator": "^1.0"
     },
+    "minimum-stability": "beta",
     "require-dev": {
-        "symfony/expression-language": ">=2.7",
+        "symfony/expression-language": "~3.4|~4.0",
         "phpunit/phpunit": "^6.4"
     },
     "autoload": {

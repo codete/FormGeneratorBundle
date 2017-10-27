@@ -5,7 +5,8 @@ php:
   - 7.2
 
 env:
-  - SYMFONY_VERSION=3.3.*
+  - SYMFONY_VERSION=3.4.*
+  - SYMFONY_VERSION=4.0.*
 
 before_script:
   - composer require symfony/symfony:${SYMFONY_VERSION} --prefer-source
@@ -13,10 +14,3 @@ before_script:
 
 script:
   - ./vendor/bin/phpunit
-
-matrix:
-  include:
-    - php: 7.1
-      env: SYMFONY_VERSION=2.7.*
-    - php: 7.1
-      env: SYMFONY_VERSION=2.8.*
