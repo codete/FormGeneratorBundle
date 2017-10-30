@@ -11,6 +11,19 @@ Additionally following requirements have been changed compared to 1.x:
 - symfony/form `>=2.7` -> `~3.4|~4.0` 
 - symfony/framework-bundle `>=2.7` -> `~3.4|~4.0`
 
+## `@Form\Display` annotation has been removed
+
+With introduction of class-level field annotations the name "Display" no longer made
+sense, please use `@Form]Field` from now on. We understand inconvenience such change
+is causing but updating this goes hand in hand with another breaking change that may
+require your attention:
+
+## `@Form\Field` no longer specifies required=false by default
+
+Assuming this setting is not right for several reasons, not being on par with Symfony's
+defaults is one of them. While changing `@Form\Display` to `@Form\Field` annotation 
+please do check if you need to add `required=false` setting to your annotations.
+
 ## Symfony2 form types are no longer allowed
 
 With 1.x version of library it was possible to use names of form types and even when

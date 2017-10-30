@@ -17,9 +17,6 @@ form out of the box - this is how FormGenerator was invented.
 Basic Usages
 ------------
 
-**`@Form\Display` annotation was deprecated in 1.3 and will be removed
-in 2.0. Please use `@Form\Field` instead.**
-
 Consider a class
 
 ``` php
