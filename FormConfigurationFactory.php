@@ -2,7 +2,6 @@
 
 namespace Codete\FormGeneratorBundle;
 
-use Codete\FormGeneratorBundle\Annotations\Display;
 use Codete\FormGeneratorBundle\Annotations\Field;
 use Codete\FormGeneratorBundle\Annotations\Form;
 use Codete\FormGeneratorBundle\Form\Type\EmbedType;
@@ -98,7 +97,7 @@ class FormConfigurationFactory
             if (!empty($fields) && !$propertyIsListed) {
                 continue; // list of fields was specified and current one is not there
             }
-            $fieldConfiguration = $this->annotationReader->getPropertyAnnotation($property, Display::class);
+            $fieldConfiguration = $this->annotationReader->getPropertyAnnotation($property, Field::class);
             if ($fieldConfiguration === null && !$propertyIsListed) {
                 continue;
             }
@@ -107,21 +106,16 @@ class FormConfigurationFactory
         // later are coming class-level fields. We need to iterate through all annotations as there's no method
         // to get *all* occurrences of chosen annotation.
         foreach ($this->annotationReader->getClassAnnotations($ro) as $annotation) {
-            if (! $annotation instanceof Display) {
+            if (! $annotation instanceof Field) {
                 continue;
             }
             $propertyName = $annotation->value;
             if (!empty($fields) && !array_key_exists($propertyName, $fields)) {
                 continue; // list of fields was specified and current one is not there
             }
-            // @todo this was a mistake originally, need to drop default required at all in 2.0
-            unset($annotation->required);
             $fieldConfigurations[$propertyName] = $annotation;
         }
         foreach ($fieldConfigurations as $propertyName => $fieldConfiguration) {
-            if ($fieldConfiguration instanceof Display && ! $fieldConfiguration instanceof Field) {
-                @trigger_error("Display annotation has been deprecated in 1.3 and will be removed in 2.0 - please use Field instead.", E_USER_DEPRECATED);
-            }
             $configuration[$propertyName] = (array)$fieldConfiguration;
             if (isset($fields[$propertyName])) {
                 $configuration[$propertyName] = array_replace_recursive($configuration[$propertyName], $fields[$propertyName]);
