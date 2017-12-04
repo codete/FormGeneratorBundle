@@ -14,7 +14,7 @@ Additionally following requirements have been changed compared to 1.x:
 ## `@Form\Display` annotation has been removed
 
 With introduction of class-level field annotations the name "Display" no longer made
-sense, please use `@Form]Field` from now on. We understand inconvenience such change
+sense, please use `@Form\Field` from now on. We understand inconvenience such change
 is causing but updating this goes hand in hand with another breaking change that may
 require your attention:
 
