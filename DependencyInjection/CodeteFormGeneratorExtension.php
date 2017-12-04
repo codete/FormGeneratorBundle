@@ -23,13 +23,11 @@ class CodeteFormGeneratorExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('form_generator.xml');
 
-        if (method_exists($container, 'registerForAutoconfiguration')) {
-            $container->registerForAutoconfiguration(FormConfigurationModifierInterface::class)
-                ->addTag(ConfigurationModifiersCompilerPass::TAG);
-            $container->registerForAutoconfiguration(FormViewProviderInterface::class)
-                ->addTag(ViewProvidersCompilerPass::TAG);
-            $container->registerForAutoconfiguration(FormFieldResolverInterface::class)
-                ->addTag(FieldResolversCompilerPass::TAG);
-        }
+        $container->registerForAutoconfiguration(FormConfigurationModifierInterface::class)
+            ->addTag(ConfigurationModifiersCompilerPass::TAG);
+        $container->registerForAutoconfiguration(FormViewProviderInterface::class)
+            ->addTag(ViewProvidersCompilerPass::TAG);
+        $container->registerForAutoconfiguration(FormFieldResolverInterface::class)
+            ->addTag(FieldResolversCompilerPass::TAG);
     }
 }
