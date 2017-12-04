@@ -9,7 +9,7 @@ our FormType classes so we wanted to automate the process and limit
 required changes only to Entity/Document/Whatever class and get new
 form out of the box - this is how FormGenerator was invented.
 
-**You're looking at the documentation for (not released yet) version 2.0**
+**You're looking at the documentation for version 2.0**
 
 - [go to 1.x documentation](https://github.com/codete/FormGeneratorBundle/blob/1.3.0/README.md)
 - [see UPGRADE.md for help with upgrading](https://github.com/codete/FormGeneratorBundle/blob/master/UPGRADE-2.0.md)
