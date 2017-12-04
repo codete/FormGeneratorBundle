@@ -15,7 +15,6 @@
         "symfony/framework-bundle": "~3.4|~4.0",
         "doctrine/instantiator": "^1.0"
     },
-    "minimum-stability": "beta",
     "require-dev": {
         "symfony/expression-language": "~3.4|~4.0",
         "phpunit/phpunit": "^6.4"
