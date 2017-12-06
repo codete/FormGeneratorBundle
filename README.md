@@ -27,7 +27,7 @@ use Codete\FormGeneratorBundle\Annotations as Form;
  * @Form\Form(
  *  personal = { "title", "name", "surname", "photo", "active" },
  *  work = { "salary" },
- *  admin = { "id" = { "type" = "NumberType::class" }, "surname" }
+ *  admin = { "id" = { "type" = NumberType::class }, "surname" }
  * )
  */
 class Person
